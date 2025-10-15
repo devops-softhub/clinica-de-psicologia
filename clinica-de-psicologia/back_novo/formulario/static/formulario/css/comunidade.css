@@ -38,7 +38,8 @@ LAYOUT DA PÁGINA
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    flex-wrap: wrap; /* Permite que o conteúdo quebre a linha em telas menores */
+    flex-wrap: wrap;
+    /* Permite que o conteúdo quebre a linha em telas menores */
 }
 
 .logo {
@@ -68,7 +69,8 @@ LAYOUT DA PÁGINA
 
 /* ====== BANNER DE TÍTULO ====== */
 .login-banner {
-    background-color: #002f6c; /* Cor mais escura para destaque */
+    background-color: #002f6c;
+    /* Cor mais escura para destaque */
     color: var(--cor-secundaria);
     padding: 10px;
     font-weight: bold;
@@ -83,7 +85,8 @@ FORMULÁRIO E SEUS ELEMENTOS
 form {
     max-width: 1000px;
     margin: 30px auto;
-    padding: 0 20px; /* Adiciona espaçamento nas laterais em telas menores */
+    padding: 0 20px;
+    /* Adiciona espaçamento nas laterais em telas menores */
     text-align: left;
 }
 
@@ -98,8 +101,10 @@ form h6 {
 /* ====== GRID PARA OS CAMPOS DO FORMULÁRIO ====== */
 .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Duas colunas */
-    gap: 10px 20px; /* Espaçamento entre linhas e colunas */
+    grid-template-columns: repeat(2, 1fr);
+    /* Duas colunas */
+    gap: 10px 20px;
+    /* Espaçamento entre linhas e colunas */
     margin-bottom: 15px;
 }
 
@@ -113,7 +118,6 @@ select {
     background-color: var(--cor-fundo-input);
     box-sizing: border-box;
     color: #000;
-    width: 100%; /* Garante que ocupem todo o espaço da grid cell */
 }
 
 input::placeholder {
@@ -122,7 +126,7 @@ input::placeholder {
 
 /* ====== ESTILOS PARA CHECKBOX ====== */
 .checkbox {
-    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     font-size: 14px;
@@ -175,13 +179,15 @@ RESPONSIVIDADE (PARA DISPOSITIVOS MÓVEIS)
    ========================================================================== */
 
 @media (max-width: 768px) {
+
     /* Em telas menores, o grid do formulário passa a ter apenas uma coluna */
     .grid {
         grid-template-columns: 1fr;
     }
 
     .header {
-        justify-content: center; /* Centraliza o logo em telas pequenas */
+        justify-content: center;
+        /* Centraliza o logo em telas pequenas */
         text-align: center;
     }
 

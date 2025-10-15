@@ -74,8 +74,8 @@ class Inscritocomunidade(models.Model):
 
 class Medicamento(models.Model):
     idmedicamento = models.AutoField(primary_key=True)
-    idfichaconvenio = models.ForeignKey(Inscritoconvenio, models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
-    idfichacomunidade = models.ForeignKey(Inscritocomunidade, models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
+    idfichaconvenio = models.ForeignKey('Inscritoconvenio', models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
+    idfichacomunidade = models.ForeignKey('Inscritocomunidade', models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
     ansiolitico = models.BooleanField(blank=True, null=True)
     antidepressivo = models.BooleanField(blank=True, null=True)
     antipsicotico = models.BooleanField(blank=True, null=True)
@@ -123,8 +123,8 @@ class Doencafisica(models.Model):
 
 class Motivoacompanhamento(models.Model):
     idmotivoacamp = models.AutoField(primary_key=True)
-    idfichaconvenio = models.ForeignKey(Inscritoconvenio, models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
-    idfichacomunidade = models.ForeignKey(Inscritocomunidade, models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
+    idfichaconvenio = models.ForeignKey('Inscritoconvenio', models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
+    idfichacomunidade = models.ForeignKey('Inscritocomunidade', models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
     ansiedade = models.BooleanField(blank=True, null=True)
     assediomoral = models.BooleanField(blank=True, null=True)
     depressao = models.BooleanField(blank=True, null=True)
@@ -149,8 +149,8 @@ class Motivoacompanhamento(models.Model):
 
 class Pcdsnd(models.Model):
     idpcdnd = models.AutoField(primary_key=True)
-    idfichaconvenio = models.ForeignKey(Inscritoconvenio, models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
-    idfichacomunidade = models.ForeignKey(Inscritocomunidade, models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
+    idfichaconvenio = models.ForeignKey('Inscritoconvenio', models.DO_NOTHING, db_column='idfichaconvenio', blank=True, null=True)
+    idfichacomunidade = models.ForeignKey('Inscritocomunidade', models.DO_NOTHING, db_column='idfichacomunidade', blank=True, null=True)
     tea = models.BooleanField(blank=True, null=True)
     tdah = models.BooleanField(blank=True, null=True)
     dffs = models.BooleanField(blank=True, null=True)
@@ -167,7 +167,7 @@ class Pcdsnd(models.Model):
 class Tipoterapia(models.Model):
     idtipoterapia = models.AutoField(primary_key=True)
     idfichaconvenio = models.ForeignKey(
-        Inscritoconvenio, 
+        'Inscritoconvenio', 
         models.DO_NOTHING, 
         db_column='idfichaconvenio', 
         blank=True, 
