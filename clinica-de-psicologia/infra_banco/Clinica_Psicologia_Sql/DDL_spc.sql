@@ -15,6 +15,7 @@ CREATE TABLE inscritoconvenio (
 	cpfinscrito CHAR(11) NOT NULL UNIQUE,
 	tellcellinscrito VARCHAR(20) NOT NULL,
 	contatourgencia VARCHAR(15) NOT NULL,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	nomecontatourgencia VARCHAR(50)NOT NULL,
 	emailinscrito VARCHAR(50) NOT NULL,
 	identidadegenero VARCHAR(25) NOT NULL CHECK (identidadegenero IN('Masculino', 'Feminino', 'Não Binário', 'Transgênero','Outros')),
@@ -41,6 +42,7 @@ CREATE TABLE inscritocomunidade (
 	tellcellinscrito VARCHAR(20) NOT NULL,
 	contatourgencia VARCHAR(15) NOT NULL,
 	nomecontatourgencia VARCHAR(50)NOT NULL,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	emailinscrito VARCHAR(45) NOT NULL,
 	identidadegenero VARCHAR(25) NOT NULL CHECK(identidadegenero IN('Masculino', 'Feminino', 'Não Binário', 'Transgênero', 'Outros')),
 	etnia VARCHAR(15) NOT NULL CHECK (etnia IN('Branca', 'Preta', 'Parda', 'Amarela', 'Indígena','Outras')),
@@ -57,6 +59,7 @@ CREATE TABLE endereco (
 	idfichacomunidade INT,
 	cidade VARCHAR(40) NOT NULL,
 	bairro VARCHAR(50),
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	rua VARCHAR(100) NOT NULL,
 	uf CHAR(2) DEFAULT 'DF' CHECK(uf in('DF')) NOT NULL,
 	cep CHAR(10) UNIQUE NOT NULL,
@@ -76,6 +79,7 @@ CREATE TABLE tipoterapia(
 	familia BOOLEAN DEFAULT FALSE,
 	grupo BOOLEAN DEFAULT FALSE,
 	casal BOOLEAN DEFAULT FALSE,
+	dthtipot TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
@@ -93,6 +97,7 @@ CREATE TABLE pcdsnd(
 	ttap BOOLEAN DEFAULT FALSE, /* campo referente ao atributo transtorno de aprendizagem*/
 	ahst BOOLEAN DEFAULT FALSE, /* campo referente ao atributo altas habilidades ou superdotação*/
 	outro BOOLEAN DEFAULT FALSE,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
@@ -119,6 +124,7 @@ CREATE TABLE motivoacompanhamento(
 	vldt BOOLEAN DEFAULT FALSE, /* campo referente a violência domestica*/
 	assediosexual BOOLEAN DEFAULT FALSE,
 	outro BOOLEAN DEFAULT FALSE,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
@@ -134,6 +140,7 @@ CREATE TABLE medicamento(
 	estabhumor BOOLEAN DEFAULT FALSE, /*estabilizador de humor*/
 	memoriatct BOOLEAN DEFAULT FALSE, /* memorização, concentração, atenção*/
 	outro BOOLEAN DEFAULT FALSE,
+	dthmedic TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
@@ -154,6 +161,7 @@ CREATE TABLE doencafisica(
 	obesidade BOOLEAN DEFAULT FALSE, 
 	pblmarenal BOOLEAN DEFAULT FALSE,/* atributo referente a problemas renais*/
 	outro BOOLEAN DEFAULT FALSE,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
@@ -166,6 +174,7 @@ CREATE TABLE disponibilidade(
 	manha BOOLEAN DEFAULT FALSE,
 	tarde BOOLEAN DEFAULT FALSE,
 	noite BOOLEAN DEFAULT FALSE,
+	dthdispo TIMESTAMP NOT NULL DEFAULT NOW(),
 	sabado BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
