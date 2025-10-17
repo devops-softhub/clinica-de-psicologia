@@ -32,9 +32,17 @@ Ficha de Inscrição - Convênio
     <h6>Convênio</h6>
     <select name="tipoencaminhamento" required>
         <option disabled selected>Tipo de Encaminhamento</option>
-        <option value="teste_valor_1">teste</option>
-        <option value="teste_valor_2">Teste</option>
-        <option value="teste_valor_3">Teste</option>
+        <option value="teste_valor_1">CAPS - Centro de Atenção Psicossocial</option>
+        <option value="teste_valor_2">CRAS - Centro de Referência Especializado de Assistência Social</option>
+        <option value="teste_valor_3">CREAS - Centro de Referência Especializado de Assistência Social</option>
+        <option value="teste_valor_4">DEAM -  Delegacia da Mulher</option>
+        <option value="teste_valor_5">DPDF - Defensoria pública do Distrito Federal</option>
+        <option value="teste_valor_6">MPDFT - Ministério Público do Distrito Federal</option>
+        <option value="teste_valor_7">SES - Secretaria de Saúde</option>
+        <option value="teste_valor_8">SEJUS - Secretaria de Justiça</option>
+        <option value="teste_valor_9">UBS - Unidade Básica de Saúde </option>
+        <option value="teste_valor_10">Clínica Ana Lucia  Chaves Fecury (Unieuro Asa Sul</option>
+        <option value="teste_valor_11">Outro</option>
     </select>
     <div class="checkbox">
         <input type="checkbox" name="testavpsico" id="testavpsico">
@@ -54,7 +62,7 @@ Ficha de Inscrição - Convênio
         <select name="uf" required>
             <option disabled selected>UF</option>
             <option value="DF">DF</option>
-            </select>
+        </select>
 
         <select name="estadocivilinscrito" required>
             <option disabled selected>Estado Civil</option>
@@ -65,72 +73,89 @@ Ficha de Inscrição - Convênio
             <option value="União Estável">União Estável</option>
             <option value="Outros">Outros</option>
         </select>
-        
-        <select name="motivos_acompanhamento" multiple>
+
+        <select required>
+            <option value="" disabled selected>Motivos da Busca do Tratamento</option>
             <option value="ansiedade">Ansiedade</option>
             <option value="depressao">Depressão</option>
-            </select>
-
-        <input type="text" name="tellcellinscrito" class="telefone" placeholder="Telefone Celular" maxlength="11" required>
-
-        <select name="medicamentos_usados" multiple>
-            <option value="ansiolitico">Ansiolítico</option>
-            <option value="antidepressivo">Antidepressivo</option>
-            </select>
-
-        <input type="email" name="emailinscrito" placeholder="E-mail" required>
-
-        <select name="pcd_neurodivergente" multiple>
-            <option value="tea">Autismo (TEA)</option>
-            <option value="tdah">TDAH</option>
-            </select>
-
-        <select name="identidadegenero" required>
-            <option value="" disabled selected>Identidade de Gênero</option>
-            <option value="Feminino">Feminino</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Não Binário">Não binário</option>
-            <option value="Transgênero">Transgênero</option>
-            <option value="Outros">Outro</option>
+            <option value="stress">Estresse</option>
+            <option value="autoestima">Autoestima</option>
+            <option value="problemas_familiares">Problemas Familiares</option>
+            <option value="transtornos_mentais">Transtornos Mentais</option>
+            <option value="outros">Outros</option>
         </select>
 
-        <select name="doencas_fisicas" multiple>
-            <option value="cancer">Câncer</option>
-            <option value="diabete">Diabetes</option>
+        <input type="text" id="telefone" class="telefone" placeholder="Telefone Celular" required>
+
+            <select required>
+                <option value="" disabled selected>Uso de Medicação</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+                <option value="prefiro_nao_dizer">Prefiro não dizer</option>
             </select>
 
-        <select name="etnia" required>
-            <option value="" disabled selected>Cor e Etnia</option>
-            <option value="Branca">Branca</option>
-            <option value="Preta">Preta</option>
-            <option value="Parda">Parda</option>
-            <option value="Amarela">Amarela</option>
-            <option value="Indígena">Indígena</option>
-        </select>
-
-        <select name="tipo_terapias" multiple>
-            <option value="individualift">Individual Infantil</option>
-            <option value="familia">Atendimento à Família</option>
+            <input type="email" placeholder="E-mail" required>
+            <select required>
+                <option value="" disabled selected>Pessoas com Deficiência e/ou Neurodivergências</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+                <option value="prefiro_nao_dizer">Prefiro não dizer</option>
             </select>
-
-        <select name="religiao" required>
-            <option disabled selected>Religião</option>
-            <option value="Católico">Católica</option>
-            <option value="Espirita">Espírita</option>
-            <option value="Sem religião">Sem religião</option>
+            <select name="identidade_genero" required>
+                <option value="" disabled selected>Identidade de Gênero</option>
+                <option value="feminino">Feminino</option>
+                <option value="masculino">Masculino</option>
+                <option value="nao_binario">Não binário</option>
+                <option value="transgenero">Transgênero</option>
+                <option value="outro">Outro</option>
             </select>
+            <select name="doencas_fisicas" required>
+                <option value="" disabled selected>Doenças Físicas Diagnosticadas</option>
+                <option value="nenhuma">Nenhuma</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="hipertensao">Hipertensão</option>
+                <option value="asma">Asma</option>
+                <option value="epilepsia">Epilepsia</option>
+                <option value="doenca_autoimune">Doença autoimune</option>
+                <option value="doenca_cronica">Doença crônica</option>
+                <option value="prefiro_nao_dizer">Prefiro não informar</option>
+            </select>
+            <select name="cor_etnia" required>
+                <option value="" disabled selected>Cor e Etnia</option>
+                <option value="branca">Branca</option>
+                <option value="preta">Preta</option>
+                <option value="parda">Parda</option>
+                <option value="amarela">Amarela</option>
+                <option value="indigena">Indígena</option>
+            </select>
+            <select required>
+                <option value="" disabled selected>Tipo de Terapia</option>
+                <option value="familia">Terapia Familiar</option>
+                <option value="grupal">Terapia em Grupo</option>
+            </select>
+            <select required>
+                <option value="" disabled selected>Religião</option>
+                <option value="catolica">Católica</option>
+                <option value="espirita">Espírita</option>
+                <option value="sem_religiao">Sem religião</option>
+            </select>
+            <select required>
+                <option value="" disabled selected>Disponibilidade</option>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+                <option value="noite">Noite</option>
+                <option value="final_semana">Finais de Semana</option>
+            </select>
+    </div>
 
-        <select name="disponibilidade_semana" multiple>
-            <option value="manha">Manhã</option>
-            <option value="tarde">Tarde</option>
-            <option value="noite">Noite</option>
-            <option value="sabado">Sábado</option>
-        </select>
+    <div class="checkbox">
+        <input type="checkbox" id="menorIdade">
+        <label for="menorIdade">O Inscrito é menor de idade?</label>
     </div>
 
     <h6>Dados do Responsável Legal</h6>
     <div class="grid" id="secao-responsavel">
-        
+
         <input type="text" class="apenas-letras" placeholder="Nome Completo">
         <input type="email" placeholder="E-mail">
         <input type="text" class="cpf" placeholder="CPF">
