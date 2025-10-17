@@ -4,6 +4,7 @@ from . import views
 app_name = 'formulario'
 
 urlpatterns = [
-    path('', views.comunidade, name='formulario'),
+    path('cadastro/comunidade/', views.comunidade, name='formulario_comuni'),
+    path('cadastro/convenio/', views.convenio, name='formulario_conv')
 
 ]

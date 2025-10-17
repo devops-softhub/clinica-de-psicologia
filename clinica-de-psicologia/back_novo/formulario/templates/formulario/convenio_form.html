@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+Ficha de Inscrição - Convênio
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'formulario/css/convenio.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="top-bar"></div>
+
+<div class="header">
+    <div class="logo">
+        <img src="{% static 'formulario/img/unieuro.png' %}" alt="UNIEURO">
+        <div class="logo-text">
+            <strong>Centro Universitário Unieuro</strong><br>
+            <small>Sua escolha para um grande futuro.</small>
+        </div>
+    </div>
+</div>
+
+<div class="login-banner">
+    FICHA DE CONVÊNIO
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <h6>Convênio</h6>
+    <select name="tipoencaminhamento" required>
+        <option disabled selected>Tipo de Encaminhamento</option>
+        <option value="teste_valor_1">teste</option>
+        <option value="teste_valor_2">Teste</option>
+        <option value="teste_valor_3">Teste</option>
+    </select>
+    <div class="checkbox">
+        <input type="checkbox" name="testavpsico" id="testavpsico">
+        <label for="testavpsico">Realizou avaliação psicológica prévia?</label>
+    </div>
+
+    <h6>Dados Pessoais do Inscrito</h6>
+    <div class="grid">
+        <input type="text" name="nomeinscrito" class="apenas-letras" placeholder="Nome Completo" required>
+        <input type="text" name="cpfinscrito" class="cpf" placeholder="CPF" maxlength="11" required>
+        <input type="date" name="dtnascimento" placeholder="Data de Nascimento" required>
+        <input type="text" name="rua" placeholder="Rua" required>
+        <input type="text" name="bairro" placeholder="Bairro">
+        <input type="text" name="cidade" placeholder="Cidade" required>
+        <input type="text" name="cep" placeholder="CEP" required>
+
+        <select name="uf" required>
+            <option disabled selected>UF</option>
+            <option value="DF">DF</option>
+            </select>
+
+        <select name="estadocivilinscrito" required>
+            <option disabled selected>Estado Civil</option>
+            <option value="Solteiro">Solteiro(a)</option>
+            <option value="Casado">Casado(a)</option>
+            <option value="Divorciado">Divorciado(a)</option>
+            <option value="Viúvo">Viúvo(a)</option>
+            <option value="União Estável">União Estável</option>
+            <option value="Outros">Outros</option>
+        </select>
+        
+        <select name="motivos_acompanhamento" multiple>
+            <option value="ansiedade">Ansiedade</option>
+            <option value="depressao">Depressão</option>
+            </select>
+
+        <input type="text" name="tellcellinscrito" class="telefone" placeholder="Telefone Celular" maxlength="11" required>
+
+        <select name="medicamentos_usados" multiple>
+            <option value="ansiolitico">Ansiolítico</option>
+            <option value="antidepressivo">Antidepressivo</option>
+            </select>
+
+        <input type="email" name="emailinscrito" placeholder="E-mail" required>
+
+        <select name="pcd_neurodivergente" multiple>
+            <option value="tea">Autismo (TEA)</option>
+            <option value="tdah">TDAH</option>
+            </select>
+
+        <select name="identidadegenero" required>
+            <option value="" disabled selected>Identidade de Gênero</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Não Binário">Não binário</option>
+            <option value="Transgênero">Transgênero</option>
+            <option value="Outros">Outro</option>
+        </select>
+
+        <select name="doencas_fisicas" multiple>
+            <option value="cancer">Câncer</option>
+            <option value="diabete">Diabetes</option>
+            </select>
+
+        <select name="etnia" required>
+            <option value="" disabled selected>Cor e Etnia</option>
+            <option value="Branca">Branca</option>
+            <option value="Preta">Preta</option>
+            <option value="Parda">Parda</option>
+            <option value="Amarela">Amarela</option>
+            <option value="Indígena">Indígena</option>
+        </select>
+
+        <select name="tipo_terapias" multiple>
+            <option value="individualift">Individual Infantil</option>
+            <option value="familia">Atendimento à Família</option>
+            </select>
+
+        <select name="religiao" required>
+            <option disabled selected>Religião</option>
+            <option value="Católico">Católica</option>
+            <option value="Espirita">Espírita</option>
+            <option value="Sem religião">Sem religião</option>
+            </select>
+
+        <select name="disponibilidade_semana" multiple>
+            <option value="manha">Manhã</option>
+            <option value="tarde">Tarde</option>
+            <option value="noite">Noite</option>
+            <option value="sabado">Sábado</option>
+        </select>
+    </div>
+
+    <h6>Dados do Responsável Legal</h6>
+    <div class="grid" id="secao-responsavel">
+        
+        <input type="text" class="apenas-letras" placeholder="Nome Completo">
+        <input type="email" placeholder="E-mail">
+        <input type="text" class="cpf" placeholder="CPF">
+        <select>
+            <option value="" disabled selected>Estado Civil</option>
+            <option value="solteiro">Solteiro(a)</option>
+            <option value="casado">Casado(a)</option>
+            <option value="divorciado">Divorciado(a)</option>
+            <option value="viuvo">Viúvo(a)</option>
+            <option value="separado">Separado(a)</option>
+            <option value="outros">Outros</option>
+        </select>
+        <input type="text" class="telefone" placeholder="Telefone Celular">
+        <input type="text" class="apenas-letras" placeholder="Grau de Parentesco">
+    </div>
+
+    <h6>Contato(s) de Urgência</h6>
+    <div class="grid">
+        <input type="text" class="apenas-letras" placeholder="Nome Completo" required>
+        <input type="text" class="telefone" placeholder="Telefone Celular" required>
+    </div>
+
+    <small class="acordo">
+        <strong>
+            Ao preencher o presente formulário e submeter minha inscrição para atendimento na Clínica Escola de
+            Psicologia do Unieuro, declaro que autorizo,
+            em conformidade com o inciso I do art. 7, da Lei nº 13.709/2018 (Lei Geral de Proteção de Dados Pessoais –
+            LGPD) que os dados pessoais aqui fornecidos
+            sejam tratados e utilizados unicamente para a finalidade exclusiva de compor o banco de dados dos
+            atendimentos a serem realizados sendo a ciência, o tratamento e
+            o uso deles restrito aos membros da Clínica Escola de Psicologia, nos termos da LGPD.
+            Declaro ainda que tenho conhecimento de que a revogação da presente autorização poderá ser feita a qualquer
+            momento, mediante solicitação formal a ser registrada
+            pelo e-mail: psicologia@unieuro.edu.br
+        </strong>
+        <div class="checkbox">
+            <input type="checkbox" id="deAcordo" required>
+            <label for="deAcordo">De Acordo</label>
+        </div>
+    </small>
+
+    <button type="submit">SALVAR INSCRIÇÃO</button>
+</form>
+
+<!-- REMOVI A CHAMADA PARA O ARQUIVO .JS EXTERNO DAQUI -->
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'formulario/js/convenio.js' %}"></script>
+{% endblock %}
