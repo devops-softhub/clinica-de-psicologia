@@ -1,86 +1,68 @@
-
-// Todo o código agora está dentro deste evento, garantindo que o HTML foi carregado.
+// formulario/js/comunidade.js
 document.addEventListener('DOMContentLoaded', function() {
     
-    // =======================================================
-    // 1. LÓGICA PARA MOSTRAR/ESCONDER DADOS DO RESPONSÁVEL
-    // =======================================================
     const checkboxMenorIdade = document.getElementById('menorIdade');
     const secaoResponsavel = document.getElementById('secao-responsavel');
+    
+    const form = document.getElementById('inscricao-form');
 
-    if (checkboxMenorIdade && secaoResponsavel) {
-        
-        function toggleResponsavel() {
-            const camposResponsavel = secaoResponsavel.querySelectorAll('input, select');
+    if (form) {
+        form.addEventListener('submit', async function(evento) {
+            evento.preventDefault();
+            
+            let formValido = true;
+            document.querySelectorAll('.cpf[required]').forEach(input => {
+                if (formValido && input.value.length !== 11) {
+                    alert('O CPF "' + (input.placeholder || 'do responsável') + '" deve conter exatamente 11 números.');
+                    input.focus();
+                    formValido = false;
+                }
+            });
+            
+            if (!formValido) {
+                return;
+            }
 
-            if (checkboxMenorIdade.checked) {
-                secaoResponsavel.style.display = 'grid';
-                camposResponsavel.forEach(campo => campo.required = true);
-            } else {
-                secaoResponsavel.style.display = 'none';
-                camposResponsavel.forEach(campo => {
-                    campo.required = false;
-                    campo.value = '';
+            // 3. Coleta os dados do formulário
+            const formData = new FormData(form);
+            const dadosObjeto = Object.fromEntries(formData.entries());
+            dadosObjeto.menorIdade = document.getElementById('menorIdade').checked;
+            dadosObjeto.deAcordo = document.getElementById('deAcordo').checked;
+
+            console.log("Dados a serem enviados:", dadosObjeto); // Para depuração
+
+            // 4. Pega o token CSRF
+            const csrfToken = dadosObjeto.csrfmiddlewaretoken;
+
+            // 5. Envia para o Django
+            try {
+                // ATENÇÃO: Verifique se a URL corresponde à do seu urls.py
+                const response = await fetch('/api/inscricao/comunidade/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify(dadosObjeto)
                 });
-            }
-        }
 
-        checkboxMenorIdade.addEventListener('change', toggleResponsavel);
-        toggleResponsavel(); // Garante o estado inicial correto
-    }
+                const resultado = await response.json();
 
-    // =======================================================
-    // 2. MÁSCARAS E VALIDAÇÕES DOS CAMPOS (INPUTS)
-    // =======================================================
-    function limparApenasLetras(input) {
-        input.value = input.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '');
-    }
+                if (response.ok) {
+                    alert(resultado.mensagem);
+                    form.reset();
+                } else if (resultado.status === 'erro_validacao') {
+                    alert('Por favor, corrija os erros no formulário.');
+                    console.log("Erros de validação do Django:", resultado.erros);
+                    // Aqui você pode adicionar lógica para mostrar os 'resultado.erros' no HTML
+                } else {
+                    alert(`Erro do servidor: ${resultado.mensagem}`);
+                }
 
-    function limparApenasNumeros(input) {
-        input.value = input.value.replace(/\D/g, '');
-    }
-
-    document.querySelectorAll('.apenas-letras').forEach(input => {
-        input.addEventListener('input', () => limparApenasLetras(input));
-    });
-
-    document.querySelectorAll('.cpf').forEach(input => {
-        input.setAttribute('maxlength', '11');
-        input.addEventListener('input', () => limparApenasNumeros(input));
-    });
-
-    document.querySelectorAll('.telefone').forEach(input => {
-        input.setAttribute('maxlength', '11');
-        input.addEventListener('input', () => limparApenasNumeros(input));
-    });
-
-    // =======================================================
-    // 3. VALIDAÇÃO GERAL ANTES DE ENVIAR O FORMULÁRIO
-    // =======================================================
-    document.querySelector('form').addEventListener('submit', function(e) {
-        let formValido = true;
-
-        // Itera sobre cada campo para validação individual
-        document.querySelectorAll('.cpf[required]').forEach(input => {
-            if (formValido && input.value.length !== 11) {
-                alert('O CPF "' + (input.placeholder || 'do responsável') + '" deve conter exatamente 11 números.');
-                input.focus();
-                formValido = false;
+            } catch (error) {
+                console.error('Erro de comunicação:', error);
+                alert('Ocorreu um erro de comunicação com o servidor.');
             }
         });
-
-        document.querySelectorAll('.telefone[required]').forEach(input => {
-            if (formValido && (input.value.length < 10 || input.value.length > 11)) {
-                alert('O Telefone "' + (input.placeholder || 'de urgência') + '" deve conter 10 ou 11 números (com DDD).');
-                input.focus();
-                formValido = false;
-            }
-        });
-        
-        // Se alguma validação falhou, previne o envio do formulário
-        if (!formValido) {
-            e.preventDefault();
-        }
-    });
-
+    }
 });

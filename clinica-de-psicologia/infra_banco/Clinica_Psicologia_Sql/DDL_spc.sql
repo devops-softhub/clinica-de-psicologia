@@ -4,7 +4,7 @@ CREATE TABLE inscritoconvenio (
 	nomeinscrito VARCHAR(100) NOT NULL,
 	dtnascimento DATE NOT NULL,
 	testavpsico BOOLEAN NOT NULL DEFAULT FALSE,
-	tipoencaminhamento VARCHAR(50) NOT NULL CHECK (tipoencaminhamento IN ('CAPS','CRAS','CREAS','DEAM','DPDF','MPDFT','SES','SEJUS','UBS','Clinica Ana Lucia Chaves Fecury Unieuro Asa Sul')),
+	encaminhamento VARCHAR(50) NOT NULL CHECK (tipoencaminhamento IN ('CAPS','CRAS','CREAS','DEAM','DPDF','MPDFT','SES','SEJUS','UBS','Clinica Ana Lucia Chaves Fecury Unieuro Asa Sul')),
 	nomeresp VARCHAR(50),
 	grauresp VARCHAR(25),
 	cpfresp CHAR(11) UNIQUE,

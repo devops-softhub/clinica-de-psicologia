@@ -26,135 +26,98 @@ Ficha de Inscrição - Comunidade
 <div class="login-banner">
     FICHA DE INSCRIÇÃO COMUNIDADE
 </div>
-
-<form>
+{% comment %} Adicione um ID ao formulário e o CSRF token {% endcomment %}
+<form id="inscricao-form">
+    {% csrf_token %}
     <h6>Dados Pessoais do Inscrito</h6>
     <div class="grid">
-        <input type="text" id="nome" class="apenas-letras" placeholder="Nome Completo" required>
-        <input type="text" id="cpf" class="cpf" placeholder="CPF" required>
-        <input type="date" placeholder="Data de Nascimento" required>
-        <input type="text" placeholder="Rua" required>
-        <input type="text" placeholder="Bairro" required>
-        <input type="text" placeholder="Cidade" required>
-        <input type="text" placeholder="CEP" required>
-        <select required>
+        <input type="text" id="nome_inscrito" name="nome_inscrito" class="apenas-letras" placeholder="Nome Completo" required>
+        <input type="text" id="cpf_inscrito" name="cpf_inscrito" class="cpf" placeholder="CPF" required>
+        <input type="date" id="data_nascimento" name="data_nascimento" placeholder="Data de Nascimento" required>
+        <input type="text" id="rua" name="rua" placeholder="Rua" required>
+        <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+        <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+        <input type="text" id="cep" name="cep" placeholder="CEP" required>
+        <select id="uf" name="uf" required>
             <option value="" disabled selected>UF</option>
             <option value="DF">DF</option>
         </select>
-        <select required>
+        <select id="estado_civil_inscrito" name="estado_civil_inscrito" required>
             <option value="" disabled selected>Estado Civil</option>
             <option value="solteiro">Solteiro(a)</option>
             <option value="casado">Casado(a)</option>
-            <option value="divorciado">Divorciado(a)</option>
-            <option value="viuvo">Viúvo(a)</option>
-            <option value="separado">Separado(a)</option>
-            <option value="outros">Outros</option>
-        </select>
-        <select required>
+            </select>
+        <select id="motivo_busca" name="motivo_busca" required>
             <option value="" disabled selected>Motivos da Busca do Tratamento</option>
             <option value="ansiedade">Ansiedade</option>
             <option value="depressao">Depressão</option>
-            <option value="stress">Estresse</option>
-            <option value="autoestima">Autoestima</option>
-            <option value="problemas_familiares">Problemas Familiares</option>
-            <option value="transtornos_mentais">Transtornos Mentais</option>
-            <option value="outros">Outros</option>
-        </select>
-        <input type="text" id="telefone" class="telefone" placeholder="Telefone Celular" required>
-        <select required>
+            </select>
+        <input type="text" id="telefone_inscrito" name="telefone_inscrito" class="telefone" placeholder="Telefone Celular" required>
+        <select id="uso_medicacao" name="uso_medicacao" required>
             <option value="" disabled selected>Uso de Medicação</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
             <option value="prefiro_nao_dizer">Prefiro não dizer</option>
         </select>
-        <input type="email" placeholder="E-mail" required>
-        <select required>
+        <input type="email" id="email_inscrito" name="email_inscrito" placeholder="E-mail" required>
+        <select id="pcd_neurodivergencia" name="pcd_neurodivergencia" required>
             <option value="" disabled selected>Pessoas com Deficiência e/ou Neurodivergências</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
             <option value="prefiro_nao_dizer">Prefiro não dizer</option>
         </select>
-        <select name="identidade_genero" required>
+        <select id="identidade_genero" name="identidade_genero" required>
             <option value="" disabled selected>Identidade de Gênero</option>
             <option value="feminino">Feminino</option>
-            <option value="masculino">Masculino</option>
-            <option value="nao_binario">Não binário</option>
-            <option value="transgenero">Transgênero</option>
-            <option value="outro">Outro</option>
-        </select>
-        <select name="doencas_fisicas" required>
+            </select>
+        <select id="doencas_fisicas" name="doencas_fisicas" required>
             <option value="" disabled selected>Doenças Físicas Diagnosticadas</option>
             <option value="nenhuma">Nenhuma</option>
-            <option value="diabetes">Diabetes</option>
-            <option value="hipertensao">Hipertensão</option>
-            <option value="asma">Asma</option>
-            <option value="epilepsia">Epilepsia</option>
-            <option value="doenca_autoimune">Doença autoimune</option>
-            <option value="doenca_cronica">Doença crônica</option>
-            <option value="prefiro_nao_dizer">Prefiro não informar</option>
-        </select>
-        <select name="cor_etnia" required>
+            </select>
+        <select id="cor_etnia" name="cor_etnia" required>
             <option value="" disabled selected>Cor e Etnia</option>
             <option value="branca">Branca</option>
-            <option value="preta">Preta</option>
-            <option value="parda">Parda</option>
-            <option value="amarela">Amarela</option>
-            <option value="indigena">Indígena</option>
-        </select>
-        <select required>
+            </select>
+        <select id="tipo_terapia" name="tipo_terapia" required>
             <option value="" disabled selected>Tipo de Terapia</option>
             <option value="familia">Terapia Familiar</option>
             <option value="grupal">Terapia em Grupo</option>
         </select>
-        <select required>
+        <select id="religiao" name="religiao" required>
             <option value="" disabled selected>Religião</option>
             <option value="catolica">Católica</option>
-            <option value="espirita">Espírita</option>
-            <option value="sem_religiao">Sem religião</option>
-        </select>
-        <select required>
+            </select>
+        <select id="disponibilidade" name="disponibilidade" required>
             <option value="" disabled selected>Disponibilidade</option>
             <option value="manha">Manhã</option>
-            <option value="tarde">Tarde</option>
-            <option value="noite">Noite</option>
-            <option value="final_semana">Finais de Semana</option>
-        </select>
+            </select>
     </div>
 
     <div class="checkbox">
-        <input type="checkbox" id="menorIdade">
+        <input type="checkbox" id="menorIdade" name="menorIdade">
         <label for="menorIdade">O Inscrito é menor de idade?</label>
     </div>
 
-    <!-- SEÇÃO DO RESPONSÁVEL CORRIGIDA -->
     <h6>Dados do Responsável Legal</h6>
     <div class="grid" id="secao-responsavel">
-        
-        <input type="text" class="apenas-letras" placeholder="Nome Completo">
-        <input type="email" placeholder="E-mail">
-        <input type="text" class="cpf" placeholder="CPF">
-        <select>
+        <input type="text" id="nome_responsavel" name="nome_responsavel" class="apenas-letras" placeholder="Nome Completo">
+        <input type="email" id="email_responsavel" name="email_responsavel" placeholder="E-mail">
+        <input type="text" id="cpf_responsavel" name="cpf_responsavel" class="cpf" placeholder="CPF">
+        <select id="estado_civil_responsavel" name="estado_civil_responsavel">
             <option value="" disabled selected>Estado Civil</option>
-            <option value="solteiro">Solteiro(a)</option>
-            <option value="casado">Casado(a)</option>
-            <option value="divorciado">Divorciado(a)</option>
-            <option value="viuvo">Viúvo(a)</option>
-            <option value="separado">Separado(a)</option>
-            <option value="outros">Outros</option>
-        </select>
-        <input type="text" class="telefone" placeholder="Telefone Celular">
-        <input type="text" class="apenas-letras" placeholder="Grau de Parentesco">
+            </select>
+        <input type="text" id="telefone_responsavel" name="telefone_responsavel" class="telefone" placeholder="Telefone Celular">
+        <input type="text" id="parentesco_responsavel" name="parentesco_responsavel" class="apenas-letras" placeholder="Grau de Parentesco">
     </div>
 
     <h6>Contato(s) de Urgência</h6>
     <div class="grid">
-        <input type="text" class="apenas-letras" placeholder="Nome Completo" required>
-        <input type="text" class="telefone" placeholder="Telefone Celular" required>
+        <input type="text" id="nome_urgencia" name="nome_urgencia" class="apenas-letras" placeholder="Nome Completo" required>
+        <input type="text" id="telefone_urgencia" name="telefone_urgencia" class="telefone" placeholder="Telefone Celular" required>
     </div>
 
     <small class="acordo">
-        <strong>
-            Ao preencher o presente formulário e submeter minha inscrição para atendimento na Clínica Escola de
+        <strong> Ao preencher o presente formulário e submeter minha inscrição para atendimento na Clínica Escola de
             Psicologia do Unieuro, declaro que autorizo,
             em conformidade com o inciso I do art. 7, da Lei nº 13.709/2018 (Lei Geral de Proteção de Dados Pessoais –
             LGPD) que os dados pessoais aqui fornecidos
@@ -166,7 +129,7 @@ Ficha de Inscrição - Comunidade
             pelo e-mail: psicologia@unieuro.edu.br
         </strong>
         <div class="checkbox">
-            <input type="checkbox" id="deAcordo" required>
+            <input type="checkbox" id="deAcordo" name="deAcordo" required>
             <label for="deAcordo">De Acordo</label>
         </div>
     </small>
