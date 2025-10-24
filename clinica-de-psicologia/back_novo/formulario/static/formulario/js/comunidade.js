@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             delete dadosObjeto.csrfmiddlewaretoken; // Remova do corpo JSON
 
             try {
-                const response = await fetch('/api/inscricao/comunidade/', {
+                const response = await fetch('/formulario/cadastro/comunidade', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

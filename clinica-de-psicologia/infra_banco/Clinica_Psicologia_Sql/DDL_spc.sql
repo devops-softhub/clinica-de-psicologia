@@ -1,10 +1,11 @@
+-- Active: 1761322344737@@127.0.0.1@5432@clinica
 -- Criação a Tabela inscrito convenio = Ficha de Inscrição(Convenio)
 CREATE TABLE inscritoconvenio (
 	idfichaconvenio SERIAL PRIMARY KEY,
 	nomeinscrito VARCHAR(100) NOT NULL,
 	dtnascimento DATE NOT NULL,
 	testavpsico BOOLEAN NOT NULL DEFAULT FALSE,
-	encaminhamento VARCHAR(50) NOT NULL CHECK (tipoencaminhamento IN ('CAPS','CRAS','CREAS','DEAM','DPDF','MPDFT','SES','SEJUS','UBS','Clinica Ana Lucia Chaves Fecury Unieuro Asa Sul')),
+	tipoencaminhamento VARCHAR(50) NOT NULL CHECK (tipoencaminhamento IN ('CAPS','CRAS','CREAS','DEAM','DPDF','MPDFT','SES','SEJUS','UBS','Clinica Ana Lucia Chaves Fecury Unieuro Asa Sul')),
 	nomeresp VARCHAR(50),
 	grauresp VARCHAR(25),
 	cpfresp CHAR(11) UNIQUE,
