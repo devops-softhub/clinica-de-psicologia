@@ -142,3 +142,4 @@ class InscritoConvenioForm(BaseInscritoForm):
     class Meta(BaseInscritoForm.Meta):
         model = Inscritoconvenio
         fields = '__all__'
+        

@@ -1,42 +1,52 @@
-// formulario/js/comunidade.js
 document.addEventListener('DOMContentLoaded', function() {
-    
+    const form = document.getElementById('form-comunidade'); // Verifique se o ID do formulário é esse
     const checkboxMenorIdade = document.getElementById('menorIdade');
     const secaoResponsavel = document.getElementById('secao-responsavel');
-    
-    const form = document.getElementById('inscricao-form');
 
-    if (form) {
-        form.addEventListener('submit', async function(evento) {
-            evento.preventDefault();
-            
-            let formValido = true;
-            document.querySelectorAll('.cpf[required]').forEach(input => {
-                if (formValido && input.value.length !== 11) {
-                    alert('O CPF "' + (input.placeholder || 'do responsável') + '" deve conter exatamente 11 números.');
-                    input.focus();
-                    formValido = false;
-                }
-            });
-            
-            if (!formValido) {
-                return;
+    // --- 1. Lógica para mostrar/ocultar dados do responsável ---
+    if (checkboxMenorIdade && secaoResponsavel) {
+        function toggleResponsavel() {
+            const camposResponsavel = secaoResponsavel.querySelectorAll('input, select');
+
+            if (checkboxMenorIdade.checked) {
+                secaoResponsavel.style.display = 'grid';
+                camposResponsavel.forEach(campo => campo.required = true);
+            } else {
+                secaoResponsavel.style.display = 'none';
+                camposResponsavel.forEach(campo => {
+                    campo.required = false;
+                    campo.value = '';
+                });
             }
+        }
+
+        checkboxMenorIdade.addEventListener('change', toggleResponsavel);
+        toggleResponsavel(); // Inicializa o estado correto ao carregar
+    }
+
+    // --- 2. Submissão do formulário ---
+    if (form) {
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evita o envio tradicional do formulário
 
             // 3. Coleta os dados do formulário
             const formData = new FormData(form);
             const dadosObjeto = Object.fromEntries(formData.entries());
-            dadosObjeto.menorIdade = document.getElementById('menorIdade').checked;
-            dadosObjeto.deAcordo = document.getElementById('deAcordo').checked;
 
-            console.log("Dados a serem enviados:", dadosObjeto); // Para depuração
+            // 4. Converte checkboxes em booleanos
+            dadosObjeto.menorIdade = checkboxMenorIdade.checked;
+            const checkboxLGPD = document.getElementById('deAcordo');
+            if (checkboxLGPD) {
+                dadosObjeto.deAcordo = checkboxLGPD.checked;
+            }
 
-            // 4. Pega o token CSRF
+            console.log("Dados a serem enviados:", dadosObjeto); // Para debug
+
+            // 5. CSRF token
             const csrfToken = dadosObjeto.csrfmiddlewaretoken;
+            delete dadosObjeto.csrfmiddlewaretoken; // Remova do corpo JSON
 
-            // 5. Envia para o Django
             try {
-                // ATENÇÃO: Verifique se a URL corresponde à do seu urls.py
                 const response = await fetch('/api/inscricao/comunidade/', {
                     method: 'POST',
                     headers: {
@@ -49,14 +59,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const resultado = await response.json();
 
                 if (response.ok) {
-                    alert(resultado.mensagem);
+                    alert(resultado.mensagem || 'Inscrição realizada com sucesso!');
                     form.reset();
+                    toggleResponsavel(); // Garante que os campos sejam ocultados novamente
                 } else if (resultado.status === 'erro_validacao') {
                     alert('Por favor, corrija os erros no formulário.');
                     console.log("Erros de validação do Django:", resultado.erros);
-                    // Aqui você pode adicionar lógica para mostrar os 'resultado.erros' no HTML
+                    // Aqui você pode exibir os erros no HTML, se desejar
                 } else {
-                    alert(`Erro do servidor: ${resultado.mensagem}`);
+                    alert(`Erro do servidor: ${resultado.mensagem || 'Erro desconhecido.'}`);
                 }
 
             } catch (error) {

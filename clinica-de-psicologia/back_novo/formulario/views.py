@@ -2,10 +2,12 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from .forms import InscritoComunidadeForm
+from django.views.decorators.http import require_http_methods
 
-@require_POST
+@require_http_methods(["GET", "POST"])
 def comunidade(request):
+    if request.method == "GET":
+        return render(request, 'formulario/comunidade_form.html')
     try:
         dados_inscrito = json.loads(request.body)
     except json.JSONDecodeError:
@@ -71,5 +73,6 @@ def comunidade(request):
             'status': 'erro_validacao',
             'erros': form.errors
         }, status=400)
+
 def convenio(request):
     return render(request, 'formulario/convenio_form.html')
