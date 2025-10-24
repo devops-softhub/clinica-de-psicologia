@@ -22,8 +22,6 @@ CREATE TABLE inscritoconvenio (
 	etnia VARCHAR(15) NOT NULL CHECK (etnia IN('Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Outras')),
 	religiao VARCHAR(30) NOT NULL CHECK (religiao IN('Católico','Evangélico','Budismo','Espirita', 'Hinduísmo', 'Islamismo', 'Judaismo', 'Religião de Matriz Africana', 'Sem religião', 'Outros')),
 	confirmlgpd BOOLEAN NOT NULL DEFAULT FALSE, 
-	dthinscricao DATE NOT NULL DEFAULT NOW(),
-	status BOOLEAN DEFAULT TRUE
 );
 
 --Criando a Tabela Inscrito Comunidade = Ficha de Inscrição(Comunidade)
@@ -48,8 +46,6 @@ CREATE TABLE inscritocomunidade (
 	etnia VARCHAR(15) NOT NULL CHECK (etnia IN('Branca', 'Preta', 'Parda', 'Amarela', 'Indígena','Outras')),
 	religiao VARCHAR(30) NOT NULL CHECK (religiao IN('Católico','Evangélico','Budismo','Espirita', 'Hinduísmo', 'Islamismo', 'Judaismo', 'Religião de Matriz Africana', 'Sem religião', 'Outros')),
 	confirmlgpd BOOLEAN NOT NULL DEFAULT FALSE,
-	dthinscricao DATE NOT NULL DEFAULT NOW(),
-	status BOOLEAN DEFAULT TRUE
 );
 
 --Criando a Tabela Endereço que é Referente ao Atributo Endereço
