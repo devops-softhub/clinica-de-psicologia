@@ -1,7 +1,4 @@
-venv/
-.venv/
-**/__pycache__/
-db.sqlite3
-dockerfile
+venv
+.venv
+.env
 .gitignore
--- liste todas os arquivos que não dever ir para o repositorio do github

@@ -23,7 +23,7 @@ class Disponibilidade(models.Model):
     sabado = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'disponibilidade'
 
 
@@ -44,7 +44,7 @@ class Doencafisica(models.Model):
     outro = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'doencafisica'
 
 
@@ -59,7 +59,7 @@ class Endereco(models.Model):
     cep = models.CharField(max_length=10, unique=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'endereco'
 
 
@@ -130,7 +130,7 @@ class Inscritocomunidade(models.Model):
         return self.nomeinscrito
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'inscritocomunidade'
 
 
@@ -159,7 +159,7 @@ class Inscritoconvenio(models.Model):
     status = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'inscritoconvenio'
 
 
@@ -175,7 +175,7 @@ class Medicamento(models.Model):
     outro = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'medicamento'
 
 
@@ -202,7 +202,7 @@ class Motivoacompanhamento(models.Model):
     outro = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'motivoacompanhamento'
 
 
@@ -220,7 +220,7 @@ class Pcdsnd(models.Model):
     outro = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pcdsnd'
 
 
@@ -250,5 +250,5 @@ class Tipoterapia(models.Model):
     casal = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'tipoterapia'
