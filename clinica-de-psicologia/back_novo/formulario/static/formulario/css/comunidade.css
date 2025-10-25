@@ -195,3 +195,19 @@ RESPONSIVIDADE (PARA DISPOSITIVOS MÓVEIS)
         text-align: center;
     }
 }
+
+/* Adicione isso ao final do seu /static/formulario/css/comunidade.css */
+
+.error-message {
+    color: #e63946; /* Um vermelho forte */
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Opcional: Adiciona uma borda vermelha ao campo com erro */
+.input-error {
+    border-color: #e63946 !important; /* !important para sobrepor outros estilos */
+    border-width: 2px !important;
+}

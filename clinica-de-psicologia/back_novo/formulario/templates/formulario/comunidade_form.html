@@ -27,7 +27,7 @@ Ficha de Inscrição - Comunidade
     FICHA DE INSCRIÇÃO COMUNIDADE
 </div>
 {% comment %} Adicione um ID ao formulário e o CSRF token {% endcomment %}
-<form id="form-comunidade">
+<form id="inscricao-form">
     {% csrf_token %}
     <h6>Dados Pessoais do Inscrito</h6>
     <div class="grid">
@@ -42,52 +42,53 @@ Ficha de Inscrição - Comunidade
             <option value="" disabled selected>UF</option>
             <option value="DF">DF</option>
         </select>
-        <select id="estado_civil_inscrito" name="estado_civil_inscrito" required>
-            <option value="" disabled selected>Estado Civil</option>
-            <option value="solteiro">Solteiro(a)</option>
-            <option value="casado">Casado(a)</option>
+        <select id="estado_civil_inscrito" name="estado_civil_inscrito" required>  
+        <option value="" disabled selected>Estado Civil</option>
+        <option value="Solteiro">Solteiro(a)</option> 
+        <option value="Casado">Casado(a)</option>
             </select>
-        <select id="motivo_busca" name="motivo_busca" required>
-            <option value="" disabled selected>Motivos da Busca do Tratamento</option>
-            <option value="ansiedade">Ansiedade</option>
-            <option value="depressao">Depressão</option>
+        <select id="motivos_acompanhamento" name="motivos_acompanhamento" multiple required>
+        <option value="" disabled>Motivos da Busca (segure Ctrl para vários)</option>
+        <option value="ansiedade">Ansiedade</option>
+        <option value="depressao">Depressão</option>
             </select>
         <input type="text" id="telefone_inscrito" name="telefone_inscrito" class="telefone" placeholder="Telefone Celular" required>
-        <select id="uso_medicacao" name="uso_medicacao" required>
+        <select id="medicamentos_usados" name="medicamentos_usados"  multiple required>
             <option value="" disabled selected>Uso de Medicação</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
             <option value="prefiro_nao_dizer">Prefiro não dizer</option>
         </select>
         <input type="email" id="email_inscrito" name="email_inscrito" placeholder="E-mail" required>
-        <select id="pcd_neurodivergencia" name="pcd_neurodivergencia" required>
+        <select id="pcd_neurodivergente" name="pcd_neurodivergente"  multiple required>
             <option value="" disabled selected>Pessoas com Deficiência e/ou Neurodivergências</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
             <option value="prefiro_nao_dizer">Prefiro não dizer</option>
         </select>
-        <select id="identidade_genero" name="identidade_genero" required>
+        <select id="identidade_genero" name="identidade_genero"  required>
             <option value="" disabled selected>Identidade de Gênero</option>
-            <option value="feminino">Feminino</option>
+            <option value="Feminino">Feminino</option>
             </select>
-        <select id="doencas_fisicas" name="doencas_fisicas" required>
+        <select id="doencas_fisicas" name="doencas_fisicas"  multiple required>
             <option value="" disabled selected>Doenças Físicas Diagnosticadas</option>
             <option value="nenhuma">Nenhuma</option>
             </select>
         <select id="cor_etnia" name="cor_etnia" required>
             <option value="" disabled selected>Cor e Etnia</option>
-            <option value="branca">Branca</option>
+            <option value="Branca">Branca</option>
             </select>
-        <select id="tipo_terapia" name="tipo_terapia" required>
-            <option value="" disabled selected>Tipo de Terapia</option>
-            <option value="familia">Terapia Familiar</option>
-            <option value="grupal">Terapia em Grupo</option>
-        </select>
+        <select id="tipo_terapias" name="tipo_terapias" multiple required>
+        <option value="" disabled>Tipo de Terapia (segure Ctrl para vários)</option>
+        <option value="familia">Terapia Familiar</option>
+        <option value="grupo">Terapia em Grupo</option> 
+            </select>
         <select id="religiao" name="religiao" required>
-            <option value="" disabled selected>Religião</option>
-            <option value="catolica">Católica</option>
+        <option value="" disabled selected>Religião</option>
+        <option value="Católico">Católica</option> 
+        <option value="Evangélico">Evangelho</option>
             </select>
-        <select id="disponibilidade" name="disponibilidade" required>
+        <select id="disponibilidade" name="disponibilidade"  multiple required>
             <option value="" disabled selected>Disponibilidade</option>
             <option value="manha">Manhã</option>
             </select>

@@ -3,11 +3,12 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
-
+from .forms import InscritoComunidadeForm
 @require_http_methods(["GET", "POST"])
 def comunidade(request):
     if request.method == "GET":
         return render(request, 'formulario/comunidade_form.html')
+    
     try:
         dados_inscrito = json.loads(request.body)
     except json.JSONDecodeError:
@@ -29,16 +30,21 @@ def comunidade(request):
         'email_inscrito': 'emailinscrito',
         'identidade_genero': 'identidadegenero',
         'cor_etnia': 'etnia',
-        'deAcordo': 'confirmlgpd'
+        'deAcordo': 'confirmlgpd',
+        'religiao': 'religiao'
     }
 
     dados_django= {}
-    for nome_html, nome_model in mapa_nomes.itens():
+    for nome_html, nome_model in mapa_nomes.items():
         if nome_html in dados_inscrito:
             dados_django[nome_model] = dados_inscrito[nome_html]
     
-    for key, value in dados_inscrito.itens():
-        if key not in mapa_nomes:
+    for key, value in dados_inscrito.items():
+        if key not in mapa_nomes and  key not in[
+            'motivo_busca', 'doencas_fisicas', 'disponibilidade', 
+            'pcd_neurodivergencia', 'tipo_terapia', 'uso_medicacao',
+            'menorIdade', 'csrfmiddlewaretoken'
+        ]:
             dados_django[key] = value
 
     campos_multiplos = {
@@ -51,10 +57,7 @@ def comunidade(request):
     }
 
     for nome_html, nome_form in campos_multiplos.items():
-        if nome_html in dados_frontend and dados_frontend[nome_html]:
-            dados_django[nome_form] = [dados_frontend[nome_html]]
-        else:
-            dados_django[nome_form] = []
+        dados_django[nome_form] = dados_inscrito.get(nome_html, [])
 
     form = InscritoComunidadeForm(dados_django)
 

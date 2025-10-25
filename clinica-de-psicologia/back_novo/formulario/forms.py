@@ -29,7 +29,7 @@ class BaseInscritoForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple, label="Possui alguma doença física?", required=False
     )
     
-    disponibilidade_semana = forms.MultipleChoiceField(
+    disponibilidade = forms.MultipleChoiceField(
         choices=[('manha', 'Manhã'), ('tarde', 'Tarde'), ('noite', 'Noite'), ('sabado', 'Sábado')],
         widget=forms.CheckboxSelectMultiple, label="Qual sua disponibilidade?", required=True
     )
@@ -134,12 +134,22 @@ class InscritoComunidadeForm(BaseInscritoForm):
     class Meta(BaseInscritoForm.Meta):
         #Faz a escolhar de qual models ele vai usar na inscricação nesso caso ele usar o models do formulario inscrito
         model = Inscritocomunidade
-        fields = '__all__'
-#Faz o novo form usando o baseinscritofomr como base e depois instacia o models especifico para adcionar as pequenas diferenças pequenas
+        fields = [
+            'nomeinscrito', 'dtnascimento', 'nomeresp', 'grauresp', 'cpfresp',
+            'estadocivilresp', 'tellcellresp', 'emailresp', 'estadocivilinscrito',
+            'cpfinscrito', 'tellcellinscrito', 'contatourgencia', 'nomecontatourgencia',
+            'emailinscrito', 'identidadegenero', 'etnia', 'religiao', 'confirmlgpd'
+        ]
 class InscritoConvenioForm(BaseInscritoForm):
     _fk_name = 'idfichaconvenio'
 
     class Meta(BaseInscritoForm.Meta):
         model = Inscritoconvenio
-        fields = '__all__'
+        fields = [
+            'nomeinscrito', 'dtnascimento', 'testavpsico', 'tipoencaminhamento',
+            'nomeresp', 'grauresp', 'cpfresp', 'estadocivilresp', 'tellcellresp',
+            'emailresp', 'estadocivilinscrito', 'cpfinscrito', 'tellcellinscrito',
+            'contatourgencia', 'emailinscrito', 'identidadegenero', 'etnia',
+            'religiao', 'confirmlgpd'
+        ]
         
