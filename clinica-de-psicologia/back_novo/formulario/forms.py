@@ -4,114 +4,196 @@ from .models import (
     Inscritoconvenio, Medicamento, Motivoacompanhamento, Pcdsnd, Tipoterapia
 )
 
-# A classe BaseInstritoform serve como base para 2 forms filhas que vão ser feitas com base no models incritoconvenio e inscritocomunidade
-# essa abordagem foif feita pois entre 1 e outro so mudar o 2 campos então montar 2 forms que vai ter apenas 2 camposd e diferença não e compensador  
-class BaseInscritoForm(forms.ModelForm):
-    motivos_acompanhamento = forms.MultipleChoiceField(
-        choices=[
-            ('ansiedade', 'Ansiedade'), ('assediomoral', 'Assédio Moral'), ('depressao', 'Depressão'),
-            ('dfaprendizagem', 'Dificuldade de Aprendizagem'), ('humorinstavel', 'Humor Instável'),
-            ('insonia', 'Insônia'), ('isolasocial', 'Isolamento Social'), ('luto', 'Luto'),
-            ('tristeza', 'Tristeza'), ('apatia', 'Apatia'), ('chorofc', 'Choro Frequente'),
-            ('exaustao', 'Exaustão'), ('fadiga', 'Fadiga'), ('faltanimo', 'Falta de Ânimo'),
-            ('vldt', 'Vazio/Invalidez'), ('assediosexual', 'Assédio Sexual'), ('outro', 'Outro'),
-        ],
-        widget=forms.CheckboxSelectMultiple, label="Motivos da Busca do Tratamento", required=False
-    )
-    
-    doencas_fisicas = forms.MultipleChoiceField(
-        choices=[
-            ('doencaresp', 'Doença Respiratória'), ('cancer', 'Câncer'), ('diabete', 'Diabetes'),
-            ('disfusexual', 'Disfunção Sexual'), ('doencadgt', 'Doença Digestiva'), ('escleorosemlt', 'Esclerose Múltipla'),
-            ('hcpt', 'Hipertensão'), ('luposatm', 'Lúpus'), ('obesidade', 'Obesidade'),
-            ('pblmarenal', 'Problema Renal'), ('outro', 'Outro'),
-        ],
-        widget=forms.CheckboxSelectMultiple, label="Possui alguma doença física?", required=False
-    )
-    
-    disponibilidade = forms.MultipleChoiceField(
-        choices=[('manha', 'Manhã'), ('tarde', 'Tarde'), ('noite', 'Noite'), ('sabado', 'Sábado')],
-        widget=forms.CheckboxSelectMultiple, label="Qual sua disponibilidade?", required=True
-    )
-    
-    pcd_neurodivergente = forms.MultipleChoiceField(
-        choices=[
-            ('tea', 'Autismo (TEA)'), ('tdah', 'TDAH'), ('dffs', 'Disfunção Fonoaudiológica'),
-            ('dfv', 'Deficiência Visual'), ('dfa', 'Deficiência Auditiva'), ('ttap', 'Transtorno de Aprendizagem'),
-            ('ahst', 'Altas Habilidades/Superdotação'), ('outro', 'Outro'),
-        ],
-        widget=forms.CheckboxSelectMultiple, label="Possui alguma deficiência ou neurodivergência?", required=False
-    )
+# --- INÍCIO: DEFINIÇÃO DOS CHOICES --- 
 
-    tipo_terapias = forms.MultipleChoiceField(
-        choices=[
-            ('individualift', 'Individual Infantil'), ('individualadt', 'Individual Adolescente'),
-            ('individualadto', 'Individual Adulto'), ('individualids', 'Individual Idoso'),
-            ('familia', 'Atendimento à Família'), ('grupo', 'Atendimento em Grupo'), ('casal', 'Atendimento ao Casal'),
-        ],
-        widget=forms.CheckboxSelectMultiple, label="Qual tipo de terapia você busca?", required=True
+# (Mantidos do seu forms.py original, pois são usados pelo ModelForm e validação)
+ESTADO_CIVIL_CHOICES = [
+    ('Solteiro', 'Solteiro'), ('Casado', 'Casado'), ('Divorciado', 'Divorciado'),
+    ('Viúvo', 'Viúvo'), ('União Estável', 'União Estável'), ('Nenhum', 'Nenhum'), ('Outros', 'Outros'),
+] 
+GENERO_CHOICES = [
+    ('Masculino', 'Masculino'), ('Feminino', 'Feminino'), ('Não Binário', 'Não Binário'),
+    ('Transgênero', 'Transgênero'), ('Outros', 'Outros'), ('pref-nao-dizer', 'Prefiro não dizer'),
+] 
+ETNIA_CHOICES = [
+    ('Branca', 'Branca'), ('Preta', 'Preta'), ('Parda', 'Parda'),
+    ('Amarela', 'Amarela'), ('Indígena', 'Indígena'), ('Outra', 'Outra'), # 'Outras' -> 'Outra'
+] 
+RELIGIAO_CHOICES = [
+    ('Católica', 'Católica'), ('Evangélica', 'Evangélica'), ('Budismo', 'Budismo'),
+    ('Espirita', 'Espirita'), ('Hinduísmo', 'Hinduísmo'), ('Islamismo', 'Islamismo'),
+    ('Judaismo', 'Judaismo'), ('Religião de Matriz Africana', 'Religião de Matriz Africana'),
+    ('Outra', 'Outra'), ('Nenhuma', 'Nenhuma / Agnóstico / Ateu'),
+]
+MOTIVOS_CHOICES = [
+    ('ansiedade', 'Ansiedade'), ('assediomoral', 'Assédio Moral'), ('depressao', 'Depressão'),
+    ('dfaprendizagem', 'Dificuldade de Aprendizagem'), ('humorinstavel', 'Humor Instável'),
+    ('insonia', 'Insônia'), ('isolasocial', 'Isolamento Social'), ('luto', 'Luto'),
+    ('tristeza', 'Tristeza'), ('apatia', 'Apatia'), ('chorofc', 'Choro Frequente'),
+    ('exaustao', 'Exaustão'), ('fadiga', 'Fadiga'), ('faltanimo', 'Falta de Ânimo'),
+    ('vldt', 'Vazio/Invalidez'), ('assediosexual', 'Assédio Sexual'), ('outro', 'Outro')
+] 
+DOENCAS_CHOICES = [
+    ('doencaresp', 'Doença Respiratória'), ('cancer', 'Câncer'), ('diabete', 'Diabetes'),
+    ('disfusexual', 'Disfunção Sexual'), ('doencadgt', 'Doença Digestiva'), 
+    ('escleorosemlt', 'Esclerose Múltipla'), ('hcpt', 'Hipertensão'), ('luposatm', 'Lúpus'), 
+    ('obesidade', 'Obesidade'), ('pblmarenal', 'Problema Renal'), ('outro', 'Outro'), ('nenhum', 'Nenhum')
+] 
+PCD_CHOICES = [
+    ('tea', 'Autismo (TEA)'), ('tdah', 'TDAH'), ('dffs', 'Disfunção Fonoaudiológica'),
+    ('dfv', 'Deficiência Visual'), ('dfa', 'Deficiência Auditiva'), ('ttap', 'Transtorno de Aprendizagem'),
+    ('ahst', 'Altas Habilidades/Superdotação'), ('outro', 'Outro'), ('nenhum', 'Nenhum')
+] 
+MEDICAMENTOS_CHOICES = [
+    ('ansiolitico', 'Ansiolítico'), ('antidepressivo', 'Antidepressivo'),
+    ('antipsicotico', 'Antipsicótico'), ('estabhumor', 'Estabilizador de Humor'),
+    ('memoriatct', 'Memória/Concentração'), ('outro', 'Outro'), ('nenhum', 'Nenhum')
+]
+
+# --- NOVOS CHOICES (para bater com os <select> do HTML) ---
+TERAPIA_CHOICES_HTML = [
+    ('individual', 'Individual'),
+    ('grupo', 'Grupo'),
+    ('casal', 'Casal'),
+    ('familia', 'Família'),
+]
+DISPONIBILIDADE_CHOICES_HTML = [
+    ('manha_semana', 'Manhã (Segunda a Sexta)'),
+    ('tarde_semana', 'Tarde (Segunda a Sexta)'),
+    ('noite_semana', 'Noite (Segunda a Sexta)'),
+    ('sabado_manha', 'Sábado (Somente pela manhã, 8:30h às 12h)'),
+]
+
+# --- A "PONTE" PARA O JAVASCRIPT ---
+# Este campo personalizado converte a string "ansiedade,luto" do JS
+# em uma lista ["ansiedade", "luto"] que o Django entende.
+class CommaSeparatedMultipleChoiceField(forms.MultipleChoiceField):
+    def to_python(self, value):
+        if not value:
+            return []
+        if isinstance(value, list):
+            return value
+        # O seu JS envia os dados como uma string separada por vírgula
+        # A view.py garante que seja uma string
+        return [v for v in value.split(',') if v] # filter(Boolean)
+
+    def validate(self, value):
+        # Roda a validação padrão do MultipleChoiceField
+        super().validate(value)
+
+
+class BaseInscritoForm(forms.ModelForm):
+    
+    # --- Campos de Escolha Única (Dropdowns) ---
+    # (Validação para os <select> do HTML)
+    estadocivilinscrito = forms.ChoiceField(
+        choices=ESTADO_CIVIL_CHOICES, required=True, label="Estado Civil (Inscrito)"
+    )
+    identidadegenero = forms.ChoiceField(
+        choices=GENERO_CHOICES, required=True, label="Identidade de Gênero"
+    )
+    etnia = forms.ChoiceField(
+        choices=ETNIA_CHOICES, required=True, label="Etnia"
+    )
+    religiao = forms.ChoiceField(
+        choices=RELIGIAO_CHOICES, required=True, label="Religião"
+    )
+    estadocivilresp = forms.ChoiceField(
+        choices=ESTADO_CIVIL_CHOICES, required=False, label="Estado Civil (Responsável)"
+    ) 
+    
+    # --- Campos de Múltipla Escolha (do JS) ---
+    # (Usam a "ponte" CommaSeparatedMultipleChoiceField)
+    motivos_acompanhamento = CommaSeparatedMultipleChoiceField(
+        choices=MOTIVOS_CHOICES, 
+        label="Motivos da Busca do Tratamento", required=False
+    )
+    doencas_fisicas = CommaSeparatedMultipleChoiceField(
+        choices=DOENCAS_CHOICES, 
+        label="Possui alguma doença física?", required=False
+    )
+    pcd_neurodivergente = CommaSeparatedMultipleChoiceField(
+        choices=PCD_CHOICES, 
+        label="Possui alguma deficiência ou neurodivergência?", required=False
+    )
+    medicamentos_usados = CommaSeparatedMultipleChoiceField(
+        choices=MEDICAMENTOS_CHOICES, 
+        label="Faz uso de algum medicamento psiquiátrico?", required=False
     )
     
-    medicamentos_usados = forms.MultipleChoiceField(
-        choices=[
-            ('ansiolitico', 'Ansiolítico'), ('antidepressivo', 'Antidepressivo'),
-            ('antipsicotico', 'Antipsicótico'), ('estabhumeor', 'Estabilizador de Humor'),
-            ('memoriatct', 'Memória/Concentração'), ('outro', 'Outro'),
-        ],
-        widget=forms.CheckboxSelectMultiple, label="Faz uso de algum medicamento psiquiátrico?", required=False
+    # --- MUDANÇA: Campos de Escolha Única (do HTML) ---
+    # (Usam ChoiceField normal, pois o JS não os modifica)
+    tipo_terapias = forms.ChoiceField(
+        choices=TERAPIA_CHOICES_HTML, 
+        label="Qual tipo de terapia você busca?", required=True
+    )
+    disponibilidade_semana = forms.ChoiceField( 
+        choices=DISPONIBILIDADE_CHOICES_HTML, 
+        label="Qual sua disponibilidade?", required=True
     )
     
+    # --- Campos de Endereço ---
     cidade = forms.CharField(max_length=40, label="Cidade")
     bairro = forms.CharField(max_length=50, required=False, label="Bairro")
     rua = forms.CharField(max_length=100, label="Rua/Avenida")
     uf = forms.CharField(max_length=2, initial='DF', label="UF")
-    cep = forms.CharField(max_length=10, label="CEP")
+    cep = forms.CharField(max_length=10, label="CEP") # Aumentado para 10 para 'XXXXX-XXX'
 
-#Salva o todos os campos do formulario base para poder facilita a instancia quanddo fori feito as classes filha
+    # --- MÉTODO SAVE ATUALIZADO ---
+    # Este método agora salva corretamente AMBOS os tipos de campo
     def save(self, commit=True):
         inscrito = super().save(commit=False)
         
         if commit:
             inscrito.save()
             
-            fk_data = {self._fk_name: inscrito} # Usado para criar a Fk que vai ser usada para guarda o nome do campo da chave estrageira
+            fk_data = {self._fk_name: inscrito}
 
-            motivos = Motivoacompanhamento(**fk_data) #criar a instância objeto, usando o fk_data para ja se referencia ao id do usuario que foi feito
-            selected = self.cleaned_data.get('motivos_acompanhamento', []) # E uma funç do dicionario do django que ver todos os campos do formulario ja validados e se não tiver nada retorna um campo vazio
-            for key, _ in self.fields['motivos_acompanhamento'].choices:# faz o loop de cada campo para a proxima linha ir verifacando qual vai ser true ou false no insert do banco
-                setattr(motivos, key, key in selected)# Verificar qual True ou false para qual opção foi marcado 
-            motivos.save() #Salva no banco de dados os novos dados , criado uma nova linha tabela do banco.
+            # 1. Salva os campos de MÚLTIPLA ESCOLHA (do JS)
+            def save_multiselect_fields(model, field_name, choices_list):
+                obj = model(**fk_data)
+                selected_values = self.cleaned_data.get(field_name, [])
+                for key, _ in choices_list:
+                    setattr(obj, key, key in selected_values)
+                obj.save()
 
-            doencas = Doencafisica(**fk_data)
-            selected = self.cleaned_data.get('doencas_fisicas', [])
-            for key, _ in self.fields['doencas_fisicas'].choices:
-                setattr(doencas, key, key in selected)
-            doencas.save()
-
-            disponibilidade = Disponibilidade(**fk_data)
-            selected = self.cleaned_data.get('disponibilidade_semana', [])
-            for key, _ in self.fields['disponibilidade_semana'].choices:
-                setattr(disponibilidade, key, key in selected)
-            disponibilidade.save()
-
-            pcd = Pcdsnd(**fk_data)
-            selected = self.cleaned_data.get('pcd_neurodivergente', [])
-            for key, _ in self.fields['pcd_neurodivergente'].choices:
-                setattr(pcd, key, key in selected)
-            pcd.save()
-
-            terapia = Tipoterapia(**fk_data)
-            selected = self.cleaned_data.get('tipo_terapias', [])
-            for key, _ in self.fields['tipo_terapias'].choices:
-                setattr(terapia, key, key in selected)
-            terapia.save()
-
-            medicamento = Medicamento(**fk_data)
-            selected = self.cleaned_data.get('medicamentos_usados', [])
-            for key, _ in self.fields['medicamentos_usados'].choices:
-                setattr(medicamento, key, key in selected)
-            medicamento.save()
+            save_multiselect_fields(Motivoacompanhamento, 'motivos_acompanhamento', MOTIVOS_CHOICES)
+            save_multiselect_fields(Doencafisica, 'doencas_fisicas', DOENCAS_CHOICES)
+            save_multiselect_fields(Pcdsnd, 'pcd_neurodivergente', PCD_CHOICES)
+            save_multiselect_fields(Medicamento, 'medicamentos_usados', MEDICAMENTOS_CHOICES)
             
+            # 2. Salva os campos de ESCOLHA ÚNICA (do HTML)
+            
+            # Mapeia o valor do <select> (ex: "manha_semana") para o campo do DB (ex: "manha")
+            disp_map = {
+                'manha_semana': 'manha',
+                'tarde_semana': 'tarde',
+                'noite_semana': 'noite',
+                'sabado_manha': 'sabado'
+            }
+            disponibilidade_obj = Disponibilidade(**fk_data)
+            selected_disp = self.cleaned_data.get('disponibilidade_semana') # Valor (ex: "manha_semana")
+            field_to_set = disp_map.get(selected_disp) # Campo do DB (ex: "manha")
+            if field_to_set:
+                setattr(disponibilidade_obj, field_to_set, True)
+            disponibilidade_obj.save()
+
+            # Mapeia o valor (ex: "individual") para o campo (ex: "individualadto")
+            # (Estou supondo que 'individual' -> 'individualadto' (Adulto))
+            terapia_map = {
+                'individual': 'individualadto', 
+                'grupo': 'grupo',
+                'casal': 'casal',
+                'familia': 'familia'
+            }
+            terapia_obj = Tipoterapia(**fk_data)
+            selected_terapia = self.cleaned_data.get('tipo_terapias') # Valor (ex: "individual")
+            field_to_set_terapia = terapia_map.get(selected_terapia) # Campo do DB (ex: "individualadto")
+            if field_to_set_terapia:
+                setattr(terapia_obj, field_to_set_terapia, True)
+            terapia_obj.save()
+
+            # 3. Salva o Endereço
             Endereco.objects.create(
                 cidade=self.cleaned_data.get('cidade'),
                 bairro=self.cleaned_data.get('bairro'),
@@ -121,7 +203,7 @@ class BaseInscritoForm(forms.ModelForm):
                 **fk_data
             )
             
-        return inscrito #retorna o id e algumas informações do inscrito para confirmação de insert
+        return inscrito
         
     class Meta:
         abstract = True
@@ -132,7 +214,6 @@ class InscritoComunidadeForm(BaseInscritoForm):
     _fk_name = 'idfichacomunidade'
 
     class Meta(BaseInscritoForm.Meta):
-        #Faz a escolhar de qual models ele vai usar na inscricação nesso caso ele usar o models do formulario inscrito
         model = Inscritocomunidade
         fields = [
             'nomeinscrito', 'dtnascimento', 'nomeresp', 'grauresp', 'cpfresp',
@@ -152,4 +233,4 @@ class InscritoConvenioForm(BaseInscritoForm):
             'contatourgencia', 'emailinscrito', 'identidadegenero', 'etnia',
             'religiao', 'confirmlgpd'
         ]
-        
+

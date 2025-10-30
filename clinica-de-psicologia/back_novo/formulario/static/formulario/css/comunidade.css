@@ -1,213 +1,133 @@
-/* ==========================================================================
-CONFIGURAÇÕES GERAIS E VARIÁVEIS
-   ========================================================================== */
-
-/* ====== VARIÁVEIS DE COR ====== */
-:root {
-    --cor-primaria: #004a8f;
-    --cor-secundaria: #ffffff;
-    --cor-texto-principal: #333333;
-    --cor-texto-secundaria: #666666;
-    --cor-fundo-input: #e0e0e0;
-    --cor-botao-hover: #003366;
-}
-
-/* ====== ESTILOS GLOBAIS (BODY) ====== */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: var(--cor-secundaria);
-    color: var(--cor-texto-principal);
-    text-align: center;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Estilo para placeholder de select (quando value="") */
+.form-select:invalid {
+  color: #6c757d;
+}
+.form-select option {
+  color: #333;
 }
 
-/* ==========================================================================
-LAYOUT DA PÁGINA
-   ========================================================================== */
-
-/* ====== BARRA SUPERIOR ====== */
-.top-bar {
-    background-color: var(--cor-fundo-input);
-    padding: 20px;
-    margin-bottom: 10px;
+.form-control[type="date"]:invalid,
+.form-control[type="date"]::placeholder {
+  color: #6c757d;
+  opacity: 1;
 }
 
-/* ====== CABEÇALHO (HEADER) ====== */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    flex-wrap: wrap;
-    /* Permite que o conteúdo quebre a linha em telas menores */
+.input-error {
+  border: 1px solid #dc3545 !important;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+.custom-select-wrapper .input-error {
+  border-right: none !important; 
 }
 
-.logo {
-    display: flex;
-    align-items: center;
+.custom-multiselect-wrapper .input-error {
+  border-right: none !important; 
 }
 
-.logo img {
-    height: 50px;
-    margin-right: 10px;
+.form-feedback-box {
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  margin-bottom: 1rem;
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.15s linear;
+}
+.feedback-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0a3622;
+}
+.feedback-danger {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #58151c;
+}
+.feedback-close-btn {
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  opacity: 0.5;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  cursor: pointer;
+}
+.feedback-close-btn:hover {
+  opacity: 0.75;
+}
+.feedback-close-btn::before {
+  content: "×";
 }
 
-.logo-text {
-    text-align: left;
+.loading-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.15em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner-border;
+  margin-right: 0.5rem;
 }
-
-.logo-text strong {
-    color: var(--cor-primaria);
-    font-weight: bold;
-    font-size: 16px;
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
 }
-
-.logo-text small {
-    color: var(--cor-texto-secundaria);
-    font-size: 12px;
-}
-
-/* ====== BANNER DE TÍTULO ====== */
-.login-banner {
-    background-color: #002f6c;
-    /* Cor mais escura para destaque */
-    color: var(--cor-secundaria);
-    padding: 10px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-/* ==========================================================================
-FORMULÁRIO E SEUS ELEMENTOS
-   ========================================================================== */
-
-/* ====== CONTAINER DO FORMULÁRIO ====== */
-form {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 0 20px;
-    /* Adiciona espaçamento nas laterais em telas menores */
-    text-align: left;
-}
-
-form h6 {
-    font-weight: bold;
-    color: #000;
-    margin-top: 30px;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-/* ====== GRID PARA OS CAMPOS DO FORMULÁRIO ====== */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Duas colunas */
-    gap: 10px 20px;
-    /* Espaçamento entre linhas e colunas */
-    margin-bottom: 15px;
-}
-
-/* ====== ESTILOS PARA INPUTS E SELECTS ====== */
-input,
-select {
-    padding: 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--cor-fundo-input);
-    box-sizing: border-box;
-    color: #000;
-}
-
-input::placeholder {
-    color: #444;
-}
-
-/* ====== ESTILOS PARA CHECKBOX ====== */
-.checkbox {
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
-.checkbox label {
-    margin: 0;
-}
-
-/* ====== TERMO DE ACORDO ====== */
-.acordo {
-    display: block;
-    font-size: 14px;
-    color: #000;
-    line-height: 1.6;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: var(--cor-fundo-input);
-    margin-top: 20px;
-    margin-bottom: 5px;
-}
-
-/* ====== BOTÃO DE SUBMISSÃO ====== */
-button[type="submit"] {
-    background-color: var(--cor-primaria);
-    color: var(--cor-secundaria);
-    border: none;
-    padding: 12px 20px;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: background-color 0.3s ease;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-button[type="submit"]:hover {
-    background-color: var(--cor-botao-hover);
-}
-
-
-/* ==========================================================================
-RESPONSIVIDADE (PARA DISPOSITIVOS MÓVEIS)
-   ========================================================================== */
-
-@media (max-width: 768px) {
-
-    /* Em telas menores, o grid do formulário passa a ter apenas uma coluna */
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .header {
-        justify-content: center;
-        /* Centraliza o logo em telas pequenas */
-        text-align: center;
-    }
-
-    .logo-text {
-        text-align: center;
-    }
-}
-
-/* Adicione isso ao final do seu /static/formulario/css/comunidade.css */
 
 .error-message {
-    color: #e63946; /* Um vermelho forte */
-    font-size: 0.9em;
-    font-weight: 500;
-    margin-top: 5px;
-    display: block;
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 0.25rem;
+  display: block;
 }
 
-/* Opcional: Adiciona uma borda vermelha ao campo com erro */
-.input-error {
-    border-color: #e63946 !important; /* !important para sobrepor outros estilos */
-    border-width: 2px !important;
+.multiselect-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: #003366;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    margin: 2px;
+    line-height: 1.2;
+}
+.multiselect-pill-remove {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 0.25rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+.multiselect-pill-remove:hover {
+    opacity: 0.75;
+}
+
+.multiselect-display:not(:has(.multiselect-pill)) .placeholder-text {
+    display: inline-block;
+}
+.multiselect-display:has(.multiselect-pill) .placeholder-text {
+    display: none;
+}
+.multiselect-display {
+    min-height: 48px; 
+}
+.multiselect-dropdown {
+    max-height: 240px;
+    overflow-y: auto;
 }
