@@ -9,7 +9,7 @@ def formulario_comunidade_view(request):
     if request.method == 'GET':
         # Não precisamos passar o 'form' aqui, já que seu HTML
         # renderiza os campos manualmente.
-        return render(request, 'formulario/comunidade_form.html')
+        return render(request, 'comunida_form.html')
 
     # A view 'POST' é o que seu JavaScript chama via 'fetch'
     if request.method == 'POST':
