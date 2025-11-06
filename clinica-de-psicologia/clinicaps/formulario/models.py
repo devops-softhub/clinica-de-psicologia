@@ -56,7 +56,7 @@ class Endereco(models.Model):
     bairro = models.CharField(max_length=50, blank=True, null=True)
     rua = models.CharField(max_length=100)
     uf = models.CharField(max_length=2, default='DF')
-    cep = models.CharField(max_length=9, unique=True)
+    cep = models.CharField(max_length=9)
 
     class Meta:
         managed = True
@@ -138,7 +138,7 @@ class Inscritoconvenio(models.Model):
     idfichaconvenio = models.AutoField(primary_key=True)
     nomeinscrito = models.CharField(max_length=100)
     dtnascimento = models.DateField()
-    testavpsico = models.BooleanField()
+    testavpsico = models.BooleanField(null = True)
     tipoencaminhamento = models.CharField(max_length=50)
     nomeresp = models.CharField(max_length=50, blank=True, null=True)
     grauresp = models.CharField(max_length=25, blank=True, null=True)
@@ -155,7 +155,7 @@ class Inscritoconvenio(models.Model):
     etnia = models.CharField(max_length=15)
     religiao = models.CharField(max_length=30)
     confirmlgpd = models.BooleanField()
-    dthinscricao = models.DateField()
+    dthinscricao = models.DateField(auto_now_add=True)
     status = models.BooleanField(blank=True, null=True)
 
     class Meta:
@@ -252,3 +252,4 @@ class Tipoterapia(models.Model):
     class Meta:
         managed = True
         db_table = 'tipoterapia'
+

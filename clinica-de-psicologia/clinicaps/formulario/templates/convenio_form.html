@@ -1,27 +1,54 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<!-- Define o Título Específico para esta página -->
-{% block title %}Ficha de Inscrição da Comunidade{% endblock %}
+{% block title %}Ficha de Inscrição por Convênio{% endblock %}
 
-<!-- Adiciona o CSS específico desta página -->
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/comunidade.css' %}">
+    <link rel="stylesheet" href="{% static 'css/convenio.css' %}">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 {% endblock %}
 
-<!-- Conteúdo principal da página do formulário -->
 {% block content %}
-<div class="bg-[#003366] text-white p-3 text-center font-bold text-base tracking-wider uppercase md:text-xl md:p-4">
-        FICHA DE INSCRIÇÃO COMUNIDADE
+    <div class="bg-[#003366] text-white p-3 text-center font-bold text-base tracking-wider uppercase md:text-xl md:p-4">
+        FICHA DE INSCRIÇÃO POR CONVÊNIO
     </div>
 
     <main class="container mx-auto px-3 md:px-4 pb-8 md:pb-16 max-w-5xl">
         
         <div id="form-feedback" class="mt-4 w-full" aria-live="polite"></div>
 
-        <form id="form-comunidade" method="POST" action="/formulario/cadastro/comunidade/" novalidate>
-
+        <form id="form-convenio" method="POST" action="/formulario/cadastro/convenio/" novalidate>
+            
             {% csrf_token %}
+
+            <h3 class="font-bold text-lg text-gray-900 mt-6 mb-4 md:text-xl md:mt-8 md:mb-6">Convênio</h3>
+            <div class="flex flex-wrap -mx-3">
+                <div class="w-full md:w-1/2 px-3">
+                    <div class="custom-select-wrapper relative mb-4">
+                        <label for="tipo_encaminhamento" class="sr-only">Tipo de Encaminhamento</label>
+                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="tipo_encaminhamento" name="tipo_encaminhamento" required>
+                            <option value="" selected disabled>Tipo de Encaminhamento</option>
+                            <option value="caps">CAPS - Centro de Atenção Psicossocial</option>
+                            <option value="cras">CRAS - Centro de Referência de Assistência Social</option>
+                            <option value="creas">CREAS - Centro de Referência Especializado de Assistência Social</option>
+                            <option value="deam">DEAM - Delegacia da Mulher</option>
+                            <option value="dpdf">DPDF - Defensoria Pública do Distrito Federal</option>
+                            <option value="mpdft">MPDFT - Ministério Público do Distrito Federal</option>
+                            <option value="ses">SES - Secretaria de Saúde</option>
+                            <option value="sejus">SEJUS - Secretaria de Justiça</option>
+                            <option value="ubs">UBS - Unidade Básica de Saúde</option>
+                            <option value="clinica_ana_lucia">Clínica Ana Lucia Chaves Fecury (Unieuro Asa Sul)</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                        <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
 
             <h3 class="font-bold text-lg text-gray-900 mt-6 mb-4 md:text-xl md:mt-8 md:mb-6">Dados Pessoais do Inscrito</h3>
             <div class="flex flex-wrap -mx-3">
@@ -52,11 +79,10 @@
                         <label for="identidade_genero" class="sr-only">Identidade de Gênero</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="identidade_genero" name="identidade_genero" required>
                             <option value="" selected disabled>Identidade de Gênero</option>
-                            <!-- CORREÇÃO: values simples (Masculino, Feminino, etc. já estavam ok) -->
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
-                            <option value="Nao Binario">Não-binário</option> <!-- CORRIGIDO de "Não Binário" -->
-                            <option value="Transgenero">Transgênero</option> <!-- CORRIGIDO de "Transgênero" -->
+                            <option value="Nao Binario">Não-binário</option>
+                            <option value="Transgenero">Transgênero</option>
                             <option value="Outros">Outro</option>
                             <option value="pref-nao-dizer">Prefiro não dizer</option>
                         </select>
@@ -66,12 +92,11 @@
                         <label for="cor_etnia" class="sr-only">Cor e Etnia</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="cor_etnia" name="cor_etnia" required>
                             <option value="" selected disabled>Cor e Etnia</option>
-                            <!-- CORREÇÃO: values simples -->
                             <option value="Branca">Branca</option>
                             <option value="Preta">Preta</option>
                             <option value="Parda">Parda</option>
                             <option value="Amarela">Amarela</option>
-                            <option value="Indigena">Indígena</option> <!-- CORRIGIDO de "Indígena" -->
+                            <option value="Indigena">Indígena</option>
                             <option value="Outra">Outra</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
@@ -79,12 +104,12 @@
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="religiao" class="sr-only">Religião</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="religiao" name="religiao" required>
-                            <!-- CORREÇÃO: values simples -->
-                            <option value="Catolica">Católica</option> <!-- CORRIGIDO de "Católica" -->
+                            <option value="" selected disabled>Religião</option>
+                            <option value="Catolica">Católica</option>
                             <option value="Evangelica">Evangélica</option>
                             <option value="Budismo">Budismo</option>
                             <option value="Espirita">Espírita</option>
-                            <option value="Hinduismo">Hinduísmo</option> <!-- CORRIGIDO de "Hinduísmo" -->
+                            <option value="Hinduismo">Hinduísmo</option>
                             <option value="Islamismo">Islamismo</option>
                             <option value="Judaismo">Judaísmo</option>
                             <option value="Matriz-afro">Religião de Matriz Africana</option>
@@ -97,11 +122,10 @@
                         <label for="estado_civil_inscrito" class="sr-only">Estado Civil</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="estado_civil_inscrito" name="estado_civil_inscrito" required>
                             <option value="" selected disabled>Estado Civil</option>
-                            <!-- CORREÇÃO: values simples -->
                             <option value="Solteiro">Solteiro(a)</option>
                             <option value="Casado">Casado(a)</option>
                             <option value="Divorciado">Divorciado(a)</option>
-                            <option value="Viuvo">Viúvo(a)</option> <!-- CORRIGIDO de "Viúvo" -->
+                            <option value="Viuvo">Viúvo(a)</option>
                             <option value="uniao-estavel">União Estável</option>
                             <option value="Nenhum">Nenhum</option>
                             <option value="Outros">Outros</option>
@@ -111,9 +135,25 @@
                     
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="motivos_acompanhamento" class="sr-only">Motivos da Busca do Tratamento/Acompanhamento Psicológico</label>
-                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="motivos_acompanhamento" name="motivos_acompanhamento" required>
-                            <option value="" selected disabled>Motivos da Busca do Tratamento/Acompanhamento Psicológico</option>
-                            <!-- Este select é preenchido pelo comunidade.js -->
+                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800" id="motivos_acompanhamento" name="motivos_acompanhamento" required>
+                            <option value="" selected disabled>Motivos da Busca do Tratamento...</option>
+                            <option value="ansiedade">Ansiedade</option>
+                            <option value="assediomoral">Assédio Moral</option>
+                            <option value="depressao">Depressão</option>
+                            <option value="dfaprendizagem">Dificuldade de Aprendizagem</option>
+                            <option value="humorinstavel">Humor Instável</option>
+                            <option value="insonia">Insônia</option>
+                            <option value="isolasocial">Isolamento Social</option>
+                            <option value="luto">Luto</option>
+                            <option value="tristeza">Tristeza</option>
+                            <option value="apatia">Apatia</option>
+                            <option value="chorofc">Choro Frequente</option>
+                            <option value="exaustao">Exaustão</option>
+                            <option value="fadiga">Fadiga</option>
+                            <option value="faltanimo">Falta de Ânimo</option>
+                            <option value="vldt">Vazio/Invalidez</option>
+                            <option value="assediosexual">Assédio Sexual</option>
+                            <option value="outro">Outro</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
@@ -123,34 +163,53 @@
                     
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="medicamentos_usados" class="sr-only">Uso de Medicação</label>
-                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="medicamentos_usados" name="medicamentos_usados" required>
+                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800" id="medicamentos_usados" name="medicamentos_usados" required>
                             <option value="" selected disabled>Uso de Medicação</option>
-                            <!-- Este select é preenchido pelo comunidade.js -->
+                            <option value="ansiolitico">Ansiolítico</option>
+                            <option value="antidepressivo">Antidepressivo</option>
+                            <option value="antipsicotico">Antipsicótico</option>
+                            <option value="estabhumor">Estabilizador de Humor</option>
+                            <option value="memoriatct">Memória/Concentração</option>
+                            <option value="outro">Outro</option>
+                            <option value="nenhum">Nenhum</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
                     
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="pcd_neurodivergente" class="sr-only">Pessoa com Deficiência e/ou Neurodivergências</label>
-                        
-                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="pcd_neurodivergente" name="pcd_neurodivergente" required>
+                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800" id="pcd_neurodivergente" name="pcd_neurodivergente" required>
                             <option value="" selected disabled>Pessoa com Deficiência e/ou Neurodivergências</option>
-                            <!-- Este select é preenchido pelo comunidade.js, mas o seu HTML antigo tinha opções estáticas. -->
-                            <!-- O JS vai substituir este <select>, então as opções aqui não importam, contanto que o ID esteja correto. -->
+                            <option value="tea">Autismo (TEA)</option>
+                            <option value="tdah">TDAH</option>
+                            <option value="dffs">Disfunção Fonoaudiológica</option>
+                            <option value="dfv">Deficiência Visual</option>
+                            <option value="dfa">Deficiência Auditiva</option>
+                            <option value="ttap">Transtorno de Aprendizagem</option>
+                            <option value="ahst">Altas Habilidades/Superdotação</option>
+                            <option value="outro">Outro</option>
+                            <option value="nenhum">Nenhum</option>
                         </select>
-                        
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
 
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="doencas_fisicas" class="sr-only">Doenças Físicas Diagnosticadas</label>
-                        
-                      
-                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="doencas_fisicas" name="doencas_fisicas" required>
+                        <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800" id="doencas_fisicas" name="doencas_fisicas" required>
                             <option value="" selected disabled>Doenças Físicas Diagnosticadas</option>
-                            <!-- Este select é preenchido pelo comunidade.js -->
+                            <option value="doencaresp">Doença Respiratória</option>
+                            <option value="cancer">Câncer</option>
+                            <option value="diabete">Diabetes</option>
+                            <option value="disfusexual">Disfunção Sexual</option>
+                            <option value="doencadgt">Doença Digestiva</option>
+                            <option value="escleorosemlt">Esclerose Múltipla</option>
+                            <option value="hcpt">Hipertensão</option>
+                            <option value="luposatm">Lúpus</option>
+                            <option value="obesidade">Obesidade</option>
+                            <option value="pblmarenal">Problema Renal</option>
+                            <option value="outro">Outro</option>
+                            <option value="nenhum">Nenhum</option>
                         </select>
-                        
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
                     
@@ -240,7 +299,6 @@
                             <label for="estado_civil_responsavel" class="sr-only">Estado Civil do Responsável</label>
                             <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="estado_civil_responsavel" name="estado_civil_responsavel">
                                 <option value="" selected disabled>Estado Civil</option>
-                                <!-- CORREÇÃO: values simples e consistentes com a lista do inscrito -->
                                 <option value="Solteiro">Solteiro(a)</option>
                                 <option value="Casado">Casado(a)</option>
                                 <option value="Divorciado">Divorciado(a)</option>
@@ -287,7 +345,6 @@
                 <span class="text-sm font-medium text-gray-700">Adicionar outro contato</span>
             </div>
 
-            <!-- Seção LGPD -->
             <div class="bg-gray-100 border border-gray-200 p-4 md:p-6 mt-8 rounded-md">
                 <p class="text-sm leading-relaxed text-gray-800 mb-4 font-bold">
                     Ao preencher o presente formulário e submeter minha inscrição para atendimento na Clínica Escola de Psicologia do Unieuro, declaro que autorizo, em conformidade com o inciso I do art. 7, da Lei nº 13.709/2018 (Lei Geral de Proteção de Dados Pessoais – LGPD) que os dados pessoais aqui fornecidos sejam tratados e utilizados unicamente para a finalidade exclusiva de compor o banco de dados dos atendimentos a serem realizados sendo a ciência, o tratamento e o uso destes restrito aos membros da Clínica Escola de Psicologia, nos termos da LGPD.
@@ -315,8 +372,6 @@
     </main>
 {% endblock %}
 
-<!-- Adiciona o JavaScript específico desta página -->
 {% block scripts %}
-    <script src="{% static 'js/comunidade.js' %}"></script>
+    <script src="{% static 'js/convenio.js' %}"></script>
 {% endblock %}
-
