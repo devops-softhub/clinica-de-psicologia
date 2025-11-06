@@ -23,8 +23,6 @@ CREATE TABLE inscritoconvenio (
 	etnia VARCHAR(15) NOT NULL CHECK (etnia IN('Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Outras')),
 	religiao VARCHAR(30) NOT NULL CHECK (religiao IN('Católico','Evangélico','Budismo','Espirita', 'Hinduísmo', 'Islamismo', 'Judaismo', 'Religião de Matriz Africana', 'Sem religião', 'Outros')),
 	confirmlgpd BOOLEAN NOT NULL DEFAULT FALSE, 
-	dthinscricao DATE NOT NULL DEFAULT NOW(),
-	status BOOLEAN DEFAULT TRUE
 );
 
 --Criando a Tabela Inscrito Comunidade = Ficha de Inscrição(Comunidade)
@@ -49,8 +47,6 @@ CREATE TABLE inscritocomunidade (
 	etnia VARCHAR(15) NOT NULL CHECK (etnia IN('Branca', 'Preta', 'Parda', 'Amarela', 'Indígena','Outras')),
 	religiao VARCHAR(30) NOT NULL CHECK (religiao IN('Católico','Evangélico','Budismo','Espirita', 'Hinduísmo', 'Islamismo', 'Judaismo', 'Religião de Matriz Africana', 'Sem religião', 'Outros')),
 	confirmlgpd BOOLEAN NOT NULL DEFAULT FALSE,
-	dthinscricao DATE NOT NULL DEFAULT NOW(),
-	status BOOLEAN DEFAULT TRUE
 );
 
 --Criando a Tabela Endereço que é Referente ao Atributo Endereço
@@ -180,30 +176,35 @@ CREATE TABLE disponibilidade(
 	FOREIGN KEY (idfichaconvenio) REFERENCES inscritoconvenio(idfichaconvenio),
 	FOREIGN  KEY (idfichacomunidade) REFERENCES inscritocomunidade(idfichacomunidade)
 );
+--Criando a tabela Usuário 
+CREATE TABLE usuário (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(100) UNIQUE NOT NULL,
+	emailinst VARCHAR(150) UNIQUE NOT NULL,
+	cpf VARCHAR(30) UNIQUE NOT NULL,
+	matricula VARCHAR(15) UNIQUE NOT NULL,
+	senha VARCHAR(255) NOT NULL,
+	dthinsert TIMESTAMP NOT NULL DEFAULT NOW(),
+	cargo VARCHAR(25) CHECK (cargo IN ('Coordenador', 'Supervisor', 'Secretaria', 'Estagiario', 'ResponsavelTec')),
+	is_active BOOLEAN DEFAULT TRUE,
+);
+
 
 --Criando a Tabela Coordenador
 CREATE TABLE coordenador (
-	idcoordenador SERIAL PRIMARY KEY,
-	nome VARCHAR(50) NOT NULL,
-	senha VARCHAR(255) NOT NULL,
-	cpf CHAR(11) UNIQUE NOT NULL,
 	crp INT NOT NULL UNIQUE, /* CRP do coordenador que está sendo cadastrado*/
 	crpcoord INT, /* CRP do coordenador que já existe no banco*/
 	dthcoord TIMESTAMP NOT NULL DEFAULT NOW(),
-	emailinst VARCHAR (255) NOT NULL, /* email-institucuinal do coordenador*/
+	foto_cooder bytea, 
 	status BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (crpcoord) REFERENCES coordenador(crp)
 );
 
 --Criando a Tabela Supervisor
 CREATE TABLE supervisor (
-	idsupervisor SERIAL PRIMARY KEY,
 	crpcoord INT NOT NULL,
-	nome VARCHAR(50) NOT NULL,
-	cpf CHAR(11) NOT NULL UNIQUE,
 	crp INT NOT NULL UNIQUE,
-	senha VARCHAR(255),
-	emailinst VARCHAR (255), /*email institucional do supervisor*/
+	foto_coord bytea, 
 	dthsup TIMESTAMP NOT NULL DEFAULT NOW(), 
 	status BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (crpcoord) REFERENCES coordenador(crp)	
@@ -211,43 +212,32 @@ CREATE TABLE supervisor (
 
 --Criando a Tabela Secretaria
 CREATE TABLE secretaria (
-	idsecretaria SERIAL PRIMARY KEY,
 	crpcoord INT NOT NULL,
-	nome VARCHAR(50) NOT NULL,
-	cpf CHAR(11) NOT NULL UNIQUE,
-	codfuncionario INT NOT NULL UNIQUE,
-	senha VARCHAR(255) NOT NULL,
 	dthsec TIMESTAMP NOT NULL DEFAULT NOW(),
-	emailinst VARCHAR (255), /* email institucional da secretaria*/
+	matricula_fun INT NOT NULL,
+	foto_sec bytea,
 	status BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (crpcoord) REFERENCES coordenador(crp)
 );
 
 --Criando a Tabela Responsavel Tecnico
 CREATE TABLE resptec(
-	idresptec SERIAL PRIMARY KEY,
 	crpcoord INT NOT NULL,
-	nome VARCHAR(50) NOT NULL,
-	senha VARCHAR(255) NOT NULL,
-	cpf CHAR(11) NOT NULL UNIQUE,
 	crpresp INT NOT NULL UNIQUE,
 	dthresp TIMESTAMP NOT NULL DEFAULT NOW(),
-	emailinst VARCHAR (255) NOT NULL, /* Email institucional da responsável técnica*/ 
+	foto_resptec bytea, 
 	status BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (crpcoord) REFERENCES coordenador(crp)
 );
 
 --Criando a Tabela Estagiario
 CREATE TABLE estagiario (
-	idestagiario SERIAL PRIMARY KEY,
 	crpsup INT NOT NULL,
 	crpcoord INT NOT NULL,
-	nome VARCHAR(50) NOT NULL,
 	ra INT NOT NULL UNIQUE,
-	senha VARCHAR(10) NOT NULL,
 	nivelestagio VARCHAR(10) NOT NULL,
 	semestre VARCHAR(10) NOT NULL, 
-	emailinst VARCHAR(255) NOT NULL, /* Geralmente o email institucional deles é do supervisor, porém aqui podemos aceitar o email institucional do aluno */
+	foto_estg BYTEA, 
 	dthestg TIMESTAMP DEFAULT NOW(),
 	status BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (crpsup) REFERENCES supervisor (crp),
@@ -444,3 +434,5 @@ CREATE TABLE htocorrencia(
 	FOREIGN KEY (crpsup) REFERENCES supervisor (crp),
 	FOREIGN KEY (crpcoord) REFERENCES coordenador (crp)	
 );
+
+
