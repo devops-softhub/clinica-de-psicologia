@@ -1,4 +1,5 @@
 -- Active: 1761322344737@@127.0.0.1@5432@clinica
+
 -- Criação a Tabela inscrito convenio = Ficha de Inscrição(Convenio)
 CREATE TABLE inscritoconvenio (
 	idfichaconvenio SERIAL PRIMARY KEY,
@@ -178,7 +179,7 @@ CREATE TABLE disponibilidade(
 );
 --Criando a tabela Usuário 
 CREATE TABLE usuário (
-	id SERIAL PRIMARY KEY,
+	iduser SERIAL PRIMARY KEY,
 	name VARCHAR(100) UNIQUE NOT NULL,
 	emailinst VARCHAR(150) UNIQUE NOT NULL,
 	cpf VARCHAR(30) UNIQUE NOT NULL,
