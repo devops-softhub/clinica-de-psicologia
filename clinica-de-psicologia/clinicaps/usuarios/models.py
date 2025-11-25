@@ -1,223 +1,108 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
+class UsuarioManager(BaseUserManager):
+    def create_user(self, matricula, email, nome_completo, password=None, **extra_fields):
+        if not matricula:
+            raise ValueError('O usuário deve ter uma matrícula (RA ou Funcional)')
+        if not email:
+            raise ValueError('O usuário deve ter um endereço de email')
+
+        email = self.normalize_email(email)
+        usuario = self.model(
+            matricula=matricula,
+            email=email,
+            nome_completo=nome_completo,
+            **extra_fields
+        )
+        usuario.set_password(password)
+        usuario.save(using=self._db)
+        return usuario
+
+    def create_superuser(self, matricula, email, nome_completo, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('cargo', 'COORD')
+
+        return self.create_user(matricula, email, nome_completo, password, **extra_fields)
 
 
-class Usuario(models.Model):
-    """
-    Modelo para a tabela 'usuário'.
-    """
-    # Opções para o campo 'cargo'
-    class Cargo(models.TextChoices):
-        COORDENADOR = 'Coordenador', 'Coordenador'
-        SUPERVISOR = 'Supervisor', 'Supervisor'
-        SECRETARIA = 'Secretaria', 'Secretaria'
-        ESTAGIARIO = 'Estagiario', 'Estagiario'
-        RESPONSAVEL_TEC = 'ResponsavelTec', 'ResponsavelTec'
+class Usuario(AbstractBaseUser, PermissionsMixin):
+    
+    CARGOS_CHOICES = [
+        ("COORD", "Coordenador Geral"),
+        ("SUPER", "Supervisor"),
+        ("RESP_TEC", "Responsável Técnico"),
+        ("ESTAG", "Estagiário"),
+        ("SEC", "Secretária"),
+    ]
 
-    # O SQL especificava 'iduser SERIAL PRIMARY KEY'.
-    # AutoField do Django é o equivalente a SERIAL.
-    iduser = models.AutoField(primary_key=True)
-    
-    name = models.CharField(max_length=100, unique=True, null=False, blank=False)
-    
-    # EmailField faz uma validação básica de email
-    emailinst = models.EmailField(max_length=150, unique=True, null=False, blank=False)
-    
-    cpf = models.CharField(max_length=30, unique=True, null=False, blank=False)
-    matricula = models.CharField(max_length=15, unique=True, null=False, blank=False)
-    
-    # !! AVISO DE SEGURANÇA !!
-    # Nunca armazene senhas como CharField.
-    # O sistema de autenticação do Django (Auth) deve ser usado
-    # para armazenar senhas de forma segura (com hash).
-    # Este campo está aqui apenas para refletir o SQL.
-    senha = models.CharField(max_length=255, null=False, blank=False)
-    
-    # auto_now_add=True é o equivalente a 'DEFAULT NOW()' na criação
-    dthinsert = models.DateTimeField(auto_now_add=True)
-    
-    # Usando 'choices' para implementar a restrição CHECK do SQL
-    cargo = models.CharField(
-        max_length=25,
-        choices=Cargo.choices,
-        null=False,
-        blank=False
+    NIVEL_ESTAGIO_CHOICES = (
+        ('BASICO', 'Básico'),
+        ('AVANCADO', 'Avançado'),
     )
+
+    # --- IDENTIFICAÇÃO ---
+    matricula = models.CharField(max_length=20, unique=True, verbose_name='Matrícula/RA')
+    nome_completo = models.CharField(max_length=255, verbose_name="Nome Completo")
+    cpf = models.CharField(max_length=14, unique=True, verbose_name="CPF") 
+    email = models.EmailField(unique=True, verbose_name="E-mail Institucional") # Mudamos de email_institucional para email para facilitar
+    telefone = models.CharField(max_length=20, verbose_name="Telefone")
+    data_nascimento = models.DateField(verbose_name='Data de nascimento', null=True, blank=True)
     
-    is_active = models.BooleanField(default=True)
+    cargo = models.CharField(max_length=20, choices=CARGOS_CHOICES, verbose_name="Cargo")
 
-    class Meta:
-        db_table = 'usuário'  # Força o nome da tabela a ser exatamente 'usuário'
-
-    def __str__(self):
-        return f"{self.name} ({self.cargo})"
-
-
-# NOTA SOBRE FOTOS (bytea / BinaryField):
-# Armazenar arquivos/imagens no banco de dados (como bytea/BinaryField)
-# geralmente não é recomendado por questões de performance.
-# A prática comum no Django é usar 'ImageField', que salva o arquivo
-# no sistema de arquivos (ou num serviço de storage como S3)
-# e armazena apenas o *caminho* para o arquivo no banco de dados.
-
-class Coordenador(models.Model):
-    """
-    Modelo para a tabela 'coordenador'.
-    O campo 'crp' é usado como Primary Key para as Foreign Keys.
-    """
-    crp = models.IntegerField(primary_key=True, verbose_name="CRP")
+    # --- CAMPOS ESPECÍFICOS (Faltavam estes no seu erro) ---
+    crp = models.CharField(max_length=20, blank=True, null=True, verbose_name="CRP")
+    documento_crp = models.FileField(upload_to='docs_crp/', blank=True, null=True, verbose_name="Upload Documento CRP")
     
-    # Relacionamento auto-referenciado (um coordenador pode ser subordinado a outro)
-    # 'self' refere-se à própria classe (Coordenador)
-    crpcoord = models.ForeignKey(
+    semestre = models.CharField(max_length=20, blank=True, null=True)
+    nivel_estagio = models.CharField(max_length=10, choices=NIVEL_ESTAGIO_CHOICES, blank=True, null=True, verbose_name="Nível do Estágio")
+    
+    supervisor_vinculado = models.ForeignKey(
         'self',
-        on_delete=models.SET_NULL,  # Se o coordenador "pai" for deletado, seta este campo para NULL
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        db_column='crpcoord',
-        related_name='subordinados'
+        limit_choices_to={'cargo': 'SUPER'},
+        related_name='estagiarios_supervisionados',
+        verbose_name="Supervisor Responsável"
     )
     
-    dthcoord = models.DateTimeField(auto_now_add=True)
+    # --- AUDITORIA ---
+    criado_por = models.ForeignKey(
+        "self",
+        models.SET_NULL,
+        related_name="usuarios_criados",
+        blank=True,
+        null=True,
+        verbose_name="Criado por"
+    )
     
-    # Equivalente a 'bytea'. Veja a nota sobre ImageField acima.
-    foto_cooder = models.BinaryField(null=True, blank=True)
-    
-    status = models.BooleanField(default=True)
+    dth_insert = models.DateTimeField(default=timezone.now, verbose_name="Data de Criação")
+    dth_delete = models.DateTimeField(blank=True, null=True)
+    status_delete = models.BooleanField(default=False, verbose_name="Excluído")
+
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+    is_staff = models.BooleanField(default=False, verbose_name='Acesso ao Admin')
+
+    objects = UsuarioManager()
+
+    USERNAME_FIELD = "matricula"
+    REQUIRED_FIELDS = ['nome_completo', 'email', 'cpf']
 
     class Meta:
-        db_table = 'coordenador'
-        verbose_name = "Coordenador"
-        verbose_name_plural = "Coordenadores"
+        db_table = "usuario"
+        verbose_name = "Usuário"
+        verbose_name_plural = "Usuários"
 
     def __str__(self):
-        return f"Coordenador CRP: {self.crp}"
-
-
-class Supervisor(models.Model):
-    """
-    Modelo para a tabela 'supervisor'.
-    O campo 'crp' é usado como Primary Key para as Foreign Keys.
-    """
-    # FK para Coordenador
-    crpcoord = models.ForeignKey(
-        Coordenador,
-        on_delete=models.PROTECT,  # Impede a exclusão de um Coordenador se houver Supervisores ligados a ele
-        null=False,
-        db_column='crpcoord',
-        related_name='supervisores'
-    )
+        return f"{self.matricula} - {self.nome_completo}"
     
-    crp = models.IntegerField(primary_key=True, verbose_name="CRP")
-    
-    foto_coord = models.BinaryField(null=True, blank=True)
-    dthsup = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = 'supervisor'
-        verbose_name = "Supervisor"
-        verbose_name_plural = "Supervisores"
-
-    def __str__(self):
-        return f"Supervisor CRP: {self.crp}"
-
-
-class Secretaria(models.Model):
-    """
-    Modelo para a tabela 'secretaria'.
-    O SQL não especificou uma Primary Key, então o Django
-    adicionará um campo 'id' automaticamente (AutoField).
-    O campo 'matricula_fun' foi mantido como um Integer.
-    """
-    crpcoord = models.ForeignKey(
-        Coordenador,
-        on_delete=models.PROTECT,
-        null=False,
-        db_column='crpcoord',
-        related_name='secretarias'
-    )
-    
-    dthsec = models.DateTimeField(auto_now_add=True)
-    
-    # O SQL não definiu como 'UNIQUE', então mantivemos assim.
-    # Se 'matricula_fun' DEVE ser a Primary Key, mude para:
-    # matricula_fun = models.IntegerField(primary_key=True)
-    matricula_fun = models.IntegerField(null=False)
-    
-    foto_sec = models.BinaryField(null=True, blank=True)
-    status = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = 'secretaria'
-        verbose_name = "Secretaria"
-        verbose_name_plural = "Secretarias"
-
-    def __str__(self):
-        # Se matricula_fun não for única, talvez seja melhor usar o self.id
-        return f"Secretaria Matrícula: {self.matricula_fun} (ID: {self.id})"
-
-
-class RespTec(models.Model):
-    """
-    Modelo para a tabela 'resptec' (Responsável Técnico).
-    O campo 'crpresp' é usado como Primary Key.
-    """
-    crpcoord = models.ForeignKey(
-        Coordenador,
-        on_delete=models.PROTECT,
-        null=False,
-        db_column='crpcoord',
-        related_name='responsaveis_tecnicos'
-    )
-    
-    crpresp = models.IntegerField(primary_key=True, verbose_name="CRP Responsável")
-    dthresp = models.DateTimeField(auto_now_add=True)
-    foto_resptec = models.BinaryField(null=True, blank=True)
-    status = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = 'resptec'
-        verbose_name = "Responsável Técnico"
-        verbose_name_plural = "Responsáveis Técnicos"
-
-    def __str__(self):
-        return f"Resp. Técnico CRP: {self.crpresp}"
-
-
-class Estagiario(models.Model):
-    """
-    Modelo para a tabela 'estagiario'.
-    O campo 'ra' (Registro Acadêmico) é usado como Primary Key.
-    """
-    crpsup = models.ForeignKey(
-        Supervisor,
-        on_delete=models.PROTECT,
-        null=False,
-        db_column='crpsup',
-        related_name='estagiarios'
-    )
-    
-    crpcoord = models.ForeignKey(
-        Coordenador,
-        on_delete=models.PROTECT,
-        null=False,
-        db_column='crpcoord',
-        related_name='estagiarios'
-    )
-    
-    ra = models.IntegerField(primary_key=True, verbose_name="RA")
-    
-    nivelestagio = models.CharField(max_length=10, null=False, blank=False)
-    semestre = models.CharField(max_length=10, null=False, blank=False)
-    foto_estg = models.BinaryField(null=True, blank=True)
-    dthestg = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = 'estagiario'
-        verbose_name = "Estagiário"
-        verbose_name_plural = "Estagiários"
-
-    def __str__(self):
-        return f"Estagiário RA: {self.ra}"
+    def soft_delete(self):
+        self.status_delete = True
+        self.dth_delete = timezone.now()
+        self.is_active = False
+        self.save()

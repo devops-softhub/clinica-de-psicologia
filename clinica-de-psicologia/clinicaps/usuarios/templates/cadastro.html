@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário | Clínica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .btn-profile {
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #555;
+            margin: 0 5px;
+            border-radius: 20px;
+            padding: 8px 20px;
+            transition: all 0.3s;
+        }
+        .btn-profile:hover { background-color: #f0f0f0; }
+        
+        /* Estilo quando o botão está selecionado */
+        .btn-profile.active {
+            background-color: #002B5C;
+            color: white;
+            border-color: #002B5C;
+            box-shadow: 0 4px 6px rgba(0,43,92,0.3);
+        }
+
+        /* Esconde seções por padrão */
+        .specific-section { display: none; }
+        .specific-section.show { display: flex; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-white text-center pt-4 pb-0 border-0">
+                        <h3 style="color: #002B5C; font-weight: bold;">Cadastro de Usuário</h3>
+                        <p class="text-muted">Selecione o perfil para liberar os campos específicos:</p>
+                        
+                        <div class="d-flex justify-content-center flex-wrap mb-4" id="profile-selector">
+                            <button type="button" class="btn btn-profile" onclick="selectProfile('ESTAG')">Estagiário</button>
+                            <button type="button" class="btn btn-profile" onclick="selectProfile('SUPER')">Supervisor</button>
+                            <button type="button" class="btn btn-profile" onclick="selectProfile('COORD')">Coordenador</button>
+                            <button type="button" class="btn btn-profile" onclick="selectProfile('RESP_TEC')">Resp. Técnica</button>
+                            <button type="button" class="btn btn-profile" onclick="selectProfile('SEC')">Secretária</button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-5 pt-0">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>Atenção:</strong> Verifique os campos abaixo.
+                                    <ul>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li>{{ field.label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <div class="d-none">
+                                {{ form.cargo }}
+                            </div>
+
+                            <h5 class="text-secondary border-bottom pb-2 mb-3">Dados Pessoais</h5>
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label class="form-label">Nome Completo</label>
+                                    {{ form.nome_completo }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">CPF</label>
+                                    {{ form.cpf }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">E-mail Institucional</label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telefone</label>
+                                    {{ form.telefone }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Data de Nascimento</label>
+                                    {{ form.data_nascimento }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" id="label-matricula">Matrícula / RA</label>
+                                    {{ form.matricula }}
+                                </div>
+                            </div>
+
+                            <div id="section-ESTAG" class="specific-section row g-3 mt-2">
+                                <h5 class="text-info border-bottom pb-2 mt-4 mb-2">Dados Acadêmicos (Estágio)</h5>
+                                <div class="col-md-4">
+                                    <label class="form-label">Semestre Atual</label>
+                                    {{ form.semestre }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Nível do Estágio</label>
+                                    {{ form.nivel_estagio }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Supervisor Responsável</label>
+                                    {{ form.supervisor_vinculado }}
+                                </div>
+                            </div>
+
+                            <div id="section-PSI" class="specific-section row g-3 mt-2">
+                                <h5 class="text-primary border-bottom pb-2 mt-4 mb-2">Credenciais Profissionais</h5>
+                                <div class="col-md-6">
+                                    <label class="form-label">Número CRP</label>
+                                    {{ form.crp }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Upload Carteira CRP</label>
+                                    {{ form.documento_crp }}
+                                </div>
+                            </div>
+
+                            <h5 class="text-secondary border-bottom pb-2 mt-4 mb-3">Segurança</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Senha</label>
+                                    {{ form.senha }}
+                                    <div class="form-text text-muted" style="font-size: 0.8rem;">
+                                        {{ form.senha.help_text }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Confirmar Senha</label>
+                                    {{ form.senha2 }}
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-5">
+                                <button type="submit" class="btn btn-lg text-white" style="background-color: #002B5C;">Cadastrar Usuário</button>
+                                <a href="{% url 'dash_coord' %}" class="btn btn-outline-secondary">Cancelar / Voltar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectProfile(profileValue) {
+            // 1. Atualiza o Select oculto do Django
+            const selectCargo = document.getElementById('id_cargo');
+            selectCargo.value = profileValue;
+
+            // 2. Gerencia a classe 'active' nos botões visuais
+            const buttons = document.querySelectorAll('.btn-profile');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(profileValue)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // 3. Mostra/Esconde seções
+            const sectionEstag = document.getElementById('section-ESTAG');
+            const sectionPsi = document.getElementById('section-PSI');
+            const labelMatricula = document.getElementById('label-matricula');
+
+            // Reset
+            sectionEstag.classList.remove('show');
+            sectionPsi.classList.remove('show');
+
+            if (profileValue === 'ESTAG') {
+                sectionEstag.classList.add('show');
+                labelMatricula.innerText = "RA Acadêmico";
+            } else if (['SUPER', 'COORD', 'RESP_TEC'].includes(profileValue)) {
+                sectionPsi.classList.add('show');
+                labelMatricula.innerText = "Matrícula Funcional";
+            } else {
+                // Secretária ou outros
+                labelMatricula.innerText = "Matrícula / Login";
+            }
+        }
+
+        // Seleciona 'ESTAG' por padrão ao carregar a página
+        window.onload = function() {
+            // Verifica se já tem valor (caso o form volte com erro)
+            const currentVal = document.getElementById('id_cargo').value;
+            if (currentVal) {
+                selectProfile(currentVal);
+            } else {
+                selectProfile('ESTAG');
+            }
+        };
+    </script>
+
+</body>
+</html>
