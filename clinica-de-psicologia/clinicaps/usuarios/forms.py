@@ -22,7 +22,6 @@ class CustomLoginForm(AuthenticationForm):
         label="Senha"
     )
 
-# --- 2. Formulário de Cadastro (Com as correções de campos) ---
 class CadastroUsuarioForm(forms.ModelForm):
     senha = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Mínimo 8 caracteres'}),
@@ -41,7 +40,7 @@ class CadastroUsuarioForm(forms.ModelForm):
         fields = (
             'matricula', 'nome_completo', 'cpf', 'email', 'telefone', 
             'data_nascimento', 'cargo', 
-            'crp', 'documento_crp', 
+            'crp', 
             'semestre', 'nivel_estagio', 'supervisor_vinculado'
         )
         
@@ -78,7 +77,6 @@ class CadastroUsuarioForm(forms.ModelForm):
         senha2 = cleaned_data.get('senha2')
         cargo = cleaned_data.get('cargo')
 
-        # Validação de Senha
         if senha:
             if len(senha) < 8 or len(senha) > 16:
                 self.add_error('senha', 'A senha deve ter entre 8 e 16 caracteres.')
@@ -104,10 +102,6 @@ class CadastroUsuarioForm(forms.ModelForm):
         elif cargo in ['SUPER', 'RESP_TEC', 'COORD']:
             if not cleaned_data.get('crp'):
                 self.add_error('crp', 'O número do CRP é obrigatório para este cargo.')
-            
-            # Upload obrigatório apenas na criação
-            if not self.instance.pk and not cleaned_data.get('documento_crp'):
-                 self.add_error('documento_crp', 'O upload do documento do CRP é obrigatório.')
 
         return cleaned_data
 

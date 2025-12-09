@@ -3,50 +3,27 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Usuário | Clínica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário | Clínica de Psicologia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .btn-profile {
-            border: 1px solid #ced4da;
-            background-color: #fff;
-            color: #555;
-            margin: 0 5px;
-            border-radius: 20px;
-            padding: 8px 20px;
-            transition: all 0.3s;
-        }
-        .btn-profile:hover { background-color: #f0f0f0; }
-        
-        /* Estilo quando o botão está selecionado */
-        .btn-profile.active {
-            background-color: #002B5C;
-            color: white;
-            border-color: #002B5C;
-            box-shadow: 0 4px 6px rgba(0,43,92,0.3);
-        }
-
-        /* Esconde seções por padrão */
-        .specific-section { display: none; }
-        .specific-section.show { display: flex; animation: fadeIn 0.5s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <link href="{% static 'css/cadastro.css' %}" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
 
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header bg-white text-center pt-4 pb-0 border-0">
-                        <h3 style="color: #002B5C; font-weight: bold;">Cadastro de Usuário</h3>
-                        <p class="text-muted">Selecione o perfil para liberar os campos específicos:</p>
+            <div class="col-lg-9 col-xl-8">
+                
+                <div class="card card-custom">
+                    <div class="card-header-custom">
+                        <img src="{% static 'img/Logo2.png' %}" alt="Logo Clínica" class="logo-img">
                         
-                        <div class="d-flex justify-content-center flex-wrap mb-4" id="profile-selector">
-                            <button type="button" class="btn btn-profile" onclick="selectProfile('ESTAG')">Estagiário</button>
+                        <h3>Novo Usuário</h3>
+                        <p class="text-muted small">Selecione o tipo de perfil para começar</p>
+                        
+                        <div class="profile-selector-container" id="profile-selector">
+                            <button type="button" class="btn btn-profile active" onclick="selectProfile('ESTAG')">Estagiário</button>
                             <button type="button" class="btn btn-profile" onclick="selectProfile('SUPER')">Supervisor</button>
                             <button type="button" class="btn btn-profile" onclick="selectProfile('COORD')">Coordenador</button>
                             <button type="button" class="btn btn-profile" onclick="selectProfile('RESP_TEC')">Resp. Técnica</button>
@@ -54,14 +31,14 @@
                         </div>
                     </div>
 
-                    <div class="card-body p-5 pt-0">
+                    <div class="card-body p-4 p-md-5 pt-0">
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             {% if form.errors %}
-                                <div class="alert alert-danger">
-                                    <strong>Atenção:</strong> Verifique os campos abaixo.
-                                    <ul>
+                                <div class="alert alert-danger shadow-sm border-0" style="border-radius: 10px;">
+                                    <strong class="d-block mb-2"><i class="bi bi-exclamation-triangle"></i> Atenção:</strong>
+                                    <ul class="mb-0 ps-3">
                                     {% for field in form %}
                                         {% for error in field.errors %}
                                             <li>{{ field.label }}: {{ error }}</li>
@@ -78,7 +55,7 @@
                                 {{ form.cargo }}
                             </div>
 
-                            <h5 class="text-secondary border-bottom pb-2 mb-3">Dados Pessoais</h5>
+                            <h5>Dados Pessoais</h5>
                             <div class="row g-3">
                                 <div class="col-md-8">
                                     <label class="form-label">Nome Completo</label>
@@ -106,8 +83,8 @@
                                 </div>
                             </div>
 
-                            <div id="section-ESTAG" class="specific-section row g-3 mt-2">
-                                <h5 class="text-info border-bottom pb-2 mt-4 mb-2">Dados Acadêmicos (Estágio)</h5>
+                            <div id="section-ESTAG" class="specific-section row g-3 mt-1">
+                                <h5>Dados Acadêmicos</h5>
                                 <div class="col-md-4">
                                     <label class="form-label">Semestre Atual</label>
                                     {{ form.semestre }}
@@ -122,24 +99,20 @@
                                 </div>
                             </div>
 
-                            <div id="section-PSI" class="specific-section row g-3 mt-2">
-                                <h5 class="text-primary border-bottom pb-2 mt-4 mb-2">Credenciais Profissionais</h5>
-                                <div class="col-md-6">
+                            <div id="section-PSI" class="specific-section row g-3 mt-1">
+                                <h5>Credenciais Profissionais</h5>
+                                <div class="col-md-12">
                                     <label class="form-label">Número CRP</label>
                                     {{ form.crp }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Upload Carteira CRP</label>
-                                    {{ form.documento_crp }}
-                                </div>
                             </div>
 
-                            <h5 class="text-secondary border-bottom pb-2 mt-4 mb-3">Segurança</h5>
+                            <h5 class="mt-4">Segurança</h5>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Senha</label>
+                                    <label class="form-label">Senha de Acesso</label>
                                     {{ form.senha }}
-                                    <div class="form-text text-muted" style="font-size: 0.8rem;">
+                                    <div class="form-text text-muted small mt-1">
                                         {{ form.senha.help_text }}
                                     </div>
                                 </div>
@@ -149,65 +122,27 @@
                                 </div>
                             </div>
 
-                            <div class="d-grid gap-2 mt-5">
-                                <button type="submit" class="btn btn-lg text-white" style="background-color: #002B5C;">Cadastrar Usuário</button>
-                                <a href="{% url 'dash_coord' %}" class="btn btn-outline-secondary">Cancelar / Voltar</a>
+                            <div class="d-grid gap-2 mt-5 mb-3">
+                                <button type="submit" class="btn btn-submit text-white shadow">
+                                    Finalizar Cadastro
+                                </button>
+                                <a href="{% url 'coodernador:coord' %}" class="btn btn-cancel btn-outline-secondary border-0">
+                                    Cancelar
+                                </a>
                             </div>
                         </form>
                     </div>
                 </div>
+
+                <div class="text-center mt-4 text-muted small">
+                    &copy; 2025 Clínica de Psicologia - UNIEURO
+                </div>
+
             </div>
         </div>
     </div>
 
-    <script>
-        function selectProfile(profileValue) {
-            // 1. Atualiza o Select oculto do Django
-            const selectCargo = document.getElementById('id_cargo');
-            selectCargo.value = profileValue;
-
-            // 2. Gerencia a classe 'active' nos botões visuais
-            const buttons = document.querySelectorAll('.btn-profile');
-            buttons.forEach(btn => {
-                if (btn.getAttribute('onclick').includes(profileValue)) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // 3. Mostra/Esconde seções
-            const sectionEstag = document.getElementById('section-ESTAG');
-            const sectionPsi = document.getElementById('section-PSI');
-            const labelMatricula = document.getElementById('label-matricula');
-
-            // Reset
-            sectionEstag.classList.remove('show');
-            sectionPsi.classList.remove('show');
-
-            if (profileValue === 'ESTAG') {
-                sectionEstag.classList.add('show');
-                labelMatricula.innerText = "RA Acadêmico";
-            } else if (['SUPER', 'COORD', 'RESP_TEC'].includes(profileValue)) {
-                sectionPsi.classList.add('show');
-                labelMatricula.innerText = "Matrícula Funcional";
-            } else {
-                // Secretária ou outros
-                labelMatricula.innerText = "Matrícula / Login";
-            }
-        }
-
-        // Seleciona 'ESTAG' por padrão ao carregar a página
-        window.onload = function() {
-            // Verifica se já tem valor (caso o form volte com erro)
-            const currentVal = document.getElementById('id_cargo').value;
-            if (currentVal) {
-                selectProfile(currentVal);
-            } else {
-                selectProfile('ESTAG');
-            }
-        };
-    </script>
+    <script src="{% static 'js/cadastro.js' %}"></script>
 
 </body>
 </html>

@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "formulario",
     "usuarios",
+    "coodernador",
+    "estagiario",
+    "Supervisor",
+    "jazzmin",
 ]
 
 MIDDLEWARE = [

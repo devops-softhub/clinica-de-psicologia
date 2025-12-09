@@ -9,19 +9,21 @@ from .forms import CustomLoginForm, CadastroUsuarioForm
 from .models import Usuario
 from django.views.generic import TemplateView
 
-# --- 1. FUNÇÃO AUXILIAR DE REDIRECIONAMENTO ---
 
 @login_required
 def redirect_after_login(request):
+    """
+    View principal que redireciona para o dashboard específico do cargo.
+    """
     user = request.user
     if user.cargo == 'COORD':
-        return redirect('dash_coord')
+        return redirect('coodernador:coord')
     elif user.cargo == 'SUPER':
-        return redirect('dash_supervisor')
+        return redirect('coodernador:supervisor')
     elif user.cargo == 'ESTAG':
-        return redirect('dash_estagiario')
-    # Fallback para login se o cargo não for reconhecido
-    return redirect('login')
+        return redirect('estagiario:home')
+                                                                        
+    return render(request, 'dashboard_coord.html')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
 # --- 2. LOGIN E CADASTRO ---
 
@@ -37,7 +39,6 @@ class CustomLoginView(LoginView):
 class CadastroUsuarioView(CreateView):
     model = Usuario
     form_class = CadastroUsuarioForm
-    # CORREÇÃO: Apontando para o arquivo correto de cadastro
     template_name = 'cadastro.html' 
     success_url = reverse_lazy('login') 
 
@@ -49,37 +50,18 @@ class CoordenadorRequiredMixin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         messages.error(self.request, "Acesso negado. Apenas Coordenadores.")
-        return redirect('redirect_dashboard')
+        return redirect('coodernador:home')
 
 # --- 4. DASHBOARDS ---
-
-class DashboardCoordenadorView(LoginRequiredMixin, CoordenadorRequiredMixin, ListView):
-    model = Usuario
-    template_name = 'dash.html'
-    context_object_name = 'usuarios'
-
-    def get_queryset(self):
-        return Usuario.objects.filter(status_delete=False).exclude(id=self.request.user.id).order_by('-dth_insert')
-
-
-@login_required
-def dashboard_estagiario(request):
-    # Placeholder: Usando o login temporariamente até criarmos a dash real
-    return render(request, 'usuarios/dash_estagiario.html')
-
-@login_required
-def dashboard_supervisor(request):
-    # Placeholder
-    return render(request, 'usuarios/dash_supervisor.html')
+# (Movidos para o app daashboard)
 
 # --- 5. CRUD ---
 
 class EditarUsuarioView(LoginRequiredMixin, CoordenadorRequiredMixin, UpdateView):
     model = Usuario
     form_class = CadastroUsuarioForm
-    # Reusa o formulário de cadastro para edição
     template_name = 'cadastro.html'
-    success_url = reverse_lazy('dash_coord')
+    success_url = reverse_lazy('coodernador:coord')
 
     def form_valid(self, form):
         messages.success(self.request, "Dados atualizados com sucesso.")
@@ -90,11 +72,11 @@ class DeletarUsuarioView(LoginRequiredMixin, CoordenadorRequiredMixin, View):
         usuario = get_object_or_404(Usuario, pk=pk)
         if usuario == request.user:
             messages.error(request, "Você não pode excluir a si mesmo.")
-            return redirect('dash_coord')
+            return redirect('coodernador:coord')
             
         usuario.soft_delete()
         messages.success(request, "Usuário desativado.")
-        return redirect('dash_coord')
+        return redirect('coodernador:coord')
 
 class NovaSenhaView(TemplateView):
     template_name = 'NovaSenha.html'
@@ -104,7 +86,7 @@ class NovaSenhaView(TemplateView):
         nova_senha = request.POST.get('novaSenha')
         confirma_senha = request.POST.get('confirmaSenha')
         
-        if nova_senha == confirms_senha:
+        if nova_senha == confirma_senha:
              messages.success(request, "Senha atualizada com sucesso! (Simulação)")
              return redirect('login')
         else:

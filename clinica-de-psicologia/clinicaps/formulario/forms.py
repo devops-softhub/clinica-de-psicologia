@@ -129,11 +129,11 @@ class BaseInscritoForm(forms.ModelForm):
     disponibilidade_semana = forms.ChoiceField( 
         choices=DISPONIBILIDADE_CHOICES_HTML, required=True
     )
+    cep = forms.CharField(max_length=9, label="CEP") # Alinhado com XXXXX-XXX
     cidade = forms.CharField(max_length=40, label="Cidade")
     bairro = forms.CharField(max_length=50, required=False, label="Bairro")
     rua = forms.CharField(max_length=100, label="Rua/Avenida")
     uf = forms.CharField(max_length=2, initial='DF', label="UF")
-    cep = forms.CharField(max_length=9, label="CEP") # Alinhado com XXXXX-XXX
 
     # --- MÉTODO SAVE (Comum) ---
     def save(self, commit=True):

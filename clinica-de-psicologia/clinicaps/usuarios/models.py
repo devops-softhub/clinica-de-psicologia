@@ -56,7 +56,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     # --- CAMPOS ESPECÍFICOS (Faltavam estes no seu erro) ---
     crp = models.CharField(max_length=20, blank=True, null=True, verbose_name="CRP")
-    documento_crp = models.FileField(upload_to='docs_crp/', blank=True, null=True, verbose_name="Upload Documento CRP")
     
     semestre = models.CharField(max_length=20, blank=True, null=True)
     nivel_estagio = models.CharField(max_length=10, choices=NIVEL_ESTAGIO_CHOICES, blank=True, null=True, verbose_name="Nível do Estágio")
