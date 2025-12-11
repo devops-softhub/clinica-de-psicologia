@@ -30,29 +30,40 @@
     </header>
 
     <section class="mb-10">
-        <h3 class="text-xl font-bold text-black border-b pb-2 mb-4">Meus Inscritos</h3>
+        <div class="flex justify-between items-center border-b pb-2 mb-4">
+            <h3 class="text-xl font-bold text-black">Meus Inscritos</h3>
+            <a href="{% url 'estagiario:consulta_inscritos' %}" class="bg-[#003366] hover:bg-blue-900 text-white text-sm font-bold py-2 px-4 rounded-full shadow-sm transition-colors">
+                <i class="fa fa-plus mr-2"></i>Consultar Novos Inscritos
+            </a>
+        </div>
         
         <div class="space-y-4">
-            {% for inscrito in inscritos %}
+            {% for prontuario in prontuarios %}
             <div class="bg-gray-100 hover:bg-white transition-all p-4 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md border border-transparent hover:border-gray-200">
                 <div class="flex items-center gap-4">
                     <div class="w-10 h-10 flex items-center justify-center text-gray-500">
                         <i class="fa-regular fa-folder-open text-xl"></i>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-gray-800">{{ inscrito.nomeinscrito }}</h4>
+                        <h4 class="font-semibold text-gray-800">
+                            {% if prontuario.paciente_comunidade %}
+                                {{ prontuario.paciente_comunidade.nomeinscrito }}
+                            {% else %}
+                                {{ prontuario.paciente_convenio.nomeinscrito }}
+                            {% endif %}
+                        </h4>
                         <p class="text-xs text-gray-500">
-                            {{ inscrito.documentos_count|default:"0" }} documentos | Última atualização: {{ inscrito.dthinscricao|date:"d/m/Y" }}
+                            Prontuário #{{ prontuario.idprontuario }} | Início: {{ prontuario.dth_abertura|date:"d/m/Y" }}
                         </p>
                     </div>
                 </div>
-                <a href="#" class="bg-[#003366] hover:bg-blue-800 text-white px-6 py-2 rounded-full font-medium text-sm transition-colors decoration-0">
+                <a href="{% url 'estagiario:dados_inscrito' prontuario.idprontuario %}" class="bg-[#003366] hover:bg-blue-800 text-white px-6 py-2 rounded-full font-medium text-sm transition-colors decoration-0">
                     Abrir
                 </a>
             </div>
             {% empty %}
             <div class="p-4 text-center text-gray-500 bg-gray-50 rounded-xl border border-gray-200">
-                Nenhum inscrito vinculado no momento.
+                Nenhum inscrito vinculado no momento. Clique em "Consultar Novos Inscritos" para começar.
             </div>
             {% endfor %}
         </div>

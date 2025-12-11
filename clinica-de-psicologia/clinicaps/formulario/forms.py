@@ -23,22 +23,43 @@ class CommaSeparatedMultipleChoiceField(forms.MultipleChoiceField):
 
 
 ESTADO_CIVIL_CHOICES = [
-    ('Solteiro', 'Solteiro'), ('Casado', 'Casado'), ('Divorciado', 'Divorciado'),
-    ('Viuvo', 'Viúvo'), ('uniao-estavel', 'uniao-estavel'), ('Nenhum', 'Nenhum'), ('Outros', 'Outros'),
-] 
+    ('Solteiro', 'Solteiro'),
+    ('Casado', 'Casado'),
+    ('Divorciado', 'Divorciado'),
+    ('Viúvo', 'Viúvo'),
+    ('União Estável', 'União Estável'),
+    ('Nenhum', 'Nenhum'),
+    ('Outros', 'Outros'),
+]
+
 GENERO_CHOICES = [
-    ('Masculino', 'Masculino'), ('Feminino', 'Feminino'), ('Nao Binario', 'Não Binário'),
-    ('Transgenero', 'Transgênero'), ('Outros', 'Outros'), ('pref-nao-dizer', 'Prefiro não dizer'),
-] 
+    ('Masculino', 'Masculino'),
+    ('Feminino', 'Feminino'),
+    ('Não Binário', 'Não Binário'),
+    ('Transgênero', 'Transgênero'),
+    ('Outros', 'Outros'),
+]
+
 ETNIA_CHOICES = [
-    ('Branca', 'Branca'), ('Preta', 'Preta'), ('Parda', 'Parda'),
-    ('Amarela', 'Amarela'), ('Indigena', 'Indígena'), ('Outra', 'Outra'),
-] 
+    ('Branca', 'Branca'),
+    ('Preta', 'Preta'),
+    ('Parda', 'Parda'),
+    ('Amarela', 'Amarela'),
+    ('Indígena', 'Indígena'),
+    ('Outras', 'Outras'),
+]
+
 RELIGIAO_CHOICES = [
-    ('Catolica', 'Católica'), ('Evangelica', 'Evangélica'),('Budismo', 'Budismo'),
-    ('Espirita', 'Espírita'), ('Hinduismo', 'Hinduísmo'),('Islamismo', 'Islamismo'),
-    ('Judaismo', 'Judaísmo'),('Matriz-afro', 'Religião de Matriz Africana'),('Outra', 'Outra'),
-    ('Nenhuma', 'Nenhuma / Agnóstico / Ateu'), 
+    ('Católico', 'Católico'),
+    ('Evangélico', 'Evangélico'),
+    ('Budismo', 'Budismo'),
+    ('Espirita', 'Espirita'),
+    ('Hinduísmo', 'Hinduísmo'),
+    ('Islamismo', 'Islamismo'),
+    ('Judaismo', 'Judaismo'),
+    ('Religião de Matriz Africana', 'Religião de Matriz Africana'),
+    ('Sem religião', 'Sem religião'),
+    ('Outros', 'Outros'),
 ]
 # Este é novo, para o convenio.html (usando os values de lá)
 ENCAMINHAMENTO_CHOICES = [
@@ -81,8 +102,13 @@ MEDICAMENTOS_CHOICES = [
     ('memoriatct', 'Memória/Concentração'), ('outro', 'Outro'), ('nenhum', 'Nenhum')
 ]
 TERAPIA_CHOICES_HTML = [
-    ('individual', 'Individual'), ('grupo', 'Grupo'),
-    ('casal', 'Casal'), ('familia', 'Família'),
+    ('infantil', 'Infantil (até 14 anos)'),
+    ('adolescente', 'Adolescente (15 a 18 anos)'),
+    ('adulto', 'Adulto (18 até 60 anos)'),
+    ('idoso', 'Idoso (60+ anos)'),
+    ('grupo', 'Em grupo'),
+    ('casal', 'Casal'),
+    ('familia', 'Família'),
 ]
 DISPONIBILIDADE_CHOICES_HTML = [
     ('manha_semana', 'Manhã (Segunda a Sexta)'), ('tarde_semana', 'Tarde (Segunda a Sexta)'),
@@ -167,8 +193,13 @@ class BaseInscritoForm(forms.ModelForm):
             disponibilidade_obj.save()
 
             terapia_map = {
-                'individual': 'individualadto', 'grupo': 'grupo',
-                'casal': 'casal', 'familia': 'familia'
+                'infantil': 'individualift',
+                'adolescente': 'individualadt',
+                'adulto': 'individualadto',
+                'idoso': 'individualids',
+                'grupo': 'grupo',
+                'casal': 'casal', 
+                'familia': 'familia'
             }
             terapia_obj = Tipoterapia(**fk_data)
             selected_terapia = self.cleaned_data.get('tipo_terapias')
@@ -238,7 +269,8 @@ class InscritoComunidadeForm(BaseInscritoForm):
         fields = [
             'nomeinscrito', 'dtnascimento', 'nomeresp', 'grauresp', 'cpfresp',
             'tellcellresp', 'emailresp', 'cpfinscrito', 'tellcellinscrito', 
-            'contatourgencia', 'nomecontatourgencia', 'emailinscrito', 'confirmlgpd'
+            'contatourgencia', 'nomecontatourgencia', 'emailinscrito', 'confirmlgpd',
+            'estadocivilinscrito', 'identidadegenero', 'etnia', 'religiao', 'estadocivilresp'
         ]
 
 class InscritoConvenioForm(BaseInscritoForm):
@@ -256,5 +288,8 @@ class InscritoConvenioForm(BaseInscritoForm):
             'nomeinscrito', 'dtnascimento', 
             'nomeresp', 'grauresp', 'cpfresp', 'tellcellresp',
             'emailresp', 'cpfinscrito', 'tellcellinscrito',
-            'emailinscrito', 'confirmlgpd'
+            'emailinscrito', 'confirmlgpd',
+            # Campos herdados/adicionais que precisam constar no Meta para serem salvos
+            'estadocivilinscrito', 'identidadegenero', 'etnia', 'religiao', 'estadocivilresp',
+            'tipoencaminhamento'
         ]

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "coodernador",
     "estagiario",
     "Supervisor",
+    "RespTecn",
     "jazzmin",
 ]
 

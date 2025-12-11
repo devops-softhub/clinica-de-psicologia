@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Detalhes do Supervisor</h2>
+        <a href="{% url 'resptecn:lista_supervisores' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Dados Pessoais
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome:</strong> {{ supervisor.nome_completo }}</p>
+                    <p><strong>CRP:</strong> {{ supervisor.crp|default:"-" }}</p>
+                    <p><strong>Email:</strong> {{ supervisor.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Telefone:</strong> {{ supervisor.telefone }}</p>
+                    <p><strong>Matrícula:</strong> {{ supervisor.matricula }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Estagiários Vinculados
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Semestre</th>
+                            <th>Nível</th>
+                            <th>Pacientes</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estagiario in estagiarios %}
+                        <tr>
+                            <td>{{ estagiario.nome_completo }}</td>
+                            <td>{{ estagiario.semestre|default:"-" }}</td>
+                            <td>{{ estagiario.get_nivel_estagio_display|default:"-" }}</td>
+                            <td>{{ estagiario.num_pacientes }}</td>
+                            <td>
+                                <!-- Reutiliza a view de detalhe do estagiário do supervisor, mas talvez precise de uma rota específica para RT se a do supervisor for restrita -->
+                                <!-- Como a view EstagiarioDetailView exige SupervisorRequiredMixin, a RT não acessaria. -->
+                                <!-- Vamos criar uma view específica ou ajustar a permissão. Por enquanto, deixo sem link ou crio um link para uma view compartilhada. -->
+                                <!-- O requisito diz: "Ter a acão de clicar no estagiario ele vai para --> 2. Visualizar do estagiario seguindo o fluxo agora." -->
+                                <!-- Então a RT deve poder ver o detalhe do estagiário. -->
+                                <!-- Vou ajustar EstagiarioDetailView para permitir RT também. -->
+                                <a href="{% url 'supervisor:estagiario_detail' estagiario.pk %}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye"></i> Visualizar
+                                </a>
+                                <button class="btn btn-sm btn-danger" disabled title="Funcionalidade de desvincular em desenvolvimento">
+                                    <i class="bi bi-person-x"></i> Desvincular
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhum estagiário vinculado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

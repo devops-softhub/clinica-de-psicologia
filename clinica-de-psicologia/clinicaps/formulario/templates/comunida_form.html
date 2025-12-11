@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_form.html' %}
 {% load static %}
 
 <!-- Define o Título Específico para esta página -->
@@ -52,13 +52,11 @@
                         <label for="identidade_genero" class="sr-only">Identidade de Gênero</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="identidade_genero" name="identidade_genero" required>
                             <option value="" selected disabled>Identidade de Gênero</option>
-                            <!-- CORREÇÃO: values simples (Masculino, Feminino, etc. já estavam ok) -->
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
-                            <option value="Nao Binario">Não-binário</option> <!-- CORRIGIDO de "Não Binário" -->
-                            <option value="Transgenero">Transgênero</option> <!-- CORRIGIDO de "Transgênero" -->
-                            <option value="Outros">Outro</option>
-                            <option value="pref-nao-dizer">Prefiro não dizer</option>
+                            <option value="Não Binário">Não Binário</option>
+                            <option value="Transgênero">Transgênero</option>
+                            <option value="Outros">Outros</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
@@ -66,30 +64,28 @@
                         <label for="cor_etnia" class="sr-only">Cor e Etnia</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="cor_etnia" name="cor_etnia" required>
                             <option value="" selected disabled>Cor e Etnia</option>
-                            <!-- CORREÇÃO: values simples -->
                             <option value="Branca">Branca</option>
                             <option value="Preta">Preta</option>
                             <option value="Parda">Parda</option>
                             <option value="Amarela">Amarela</option>
-                            <option value="Indigena">Indígena</option> <!-- CORRIGIDO de "Indígena" -->
-                            <option value="Outra">Outra</option>
+                            <option value="Indígena">Indígena</option>
+                            <option value="Outras">Outras</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
                     <div class="custom-select-wrapper relative mb-4">
                         <label for="religiao" class="sr-only">Religião</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="religiao" name="religiao" required>
-                            <!-- CORREÇÃO: values simples -->
-                            <option value="Catolica">Católica</option> <!-- CORRIGIDO de "Católica" -->
-                            <option value="Evangelica">Evangélica</option>
+                            <option value="Católico">Católico</option>
+                            <option value="Evangélico">Evangélico</option>
                             <option value="Budismo">Budismo</option>
-                            <option value="Espirita">Espírita</option>
-                            <option value="Hinduismo">Hinduísmo</option> <!-- CORRIGIDO de "Hinduísmo" -->
+                            <option value="Espirita">Espirita</option>
+                            <option value="Hinduísmo">Hinduísmo</option>
                             <option value="Islamismo">Islamismo</option>
-                            <option value="Judaismo">Judaísmo</option>
-                            <option value="Matriz-afro">Religião de Matriz Africana</option>
-                            <option value="Outra">Outra</option>
-                            <option value="Nenhuma">Nenhuma / Agnóstico / Ateu</option>
+                            <option value="Judaismo">Judaismo</option>
+                            <option value="Religião de Matriz Africana">Religião de Matriz Africana</option>
+                            <option value="Sem religião">Sem religião</option>
+                            <option value="Outros">Outros</option>
                         </select>
                         <div class="custom-arrow absolute top-0 right-0 bottom-0 w-10 bg-[#003366] text-white flex items-center justify-center pointer-events-none rounded-r-md text-lg md:w-12"><i class="bi bi-caret-down-fill" aria-hidden="true"></i></div>
                     </div>
@@ -97,12 +93,11 @@
                         <label for="estado_civil_inscrito" class="sr-only">Estado Civil</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="estado_civil_inscrito" name="estado_civil_inscrito" required>
                             <option value="" selected disabled>Estado Civil</option>
-                            <!-- CORREÇÃO: values simples -->
-                            <option value="Solteiro">Solteiro(a)</option>
-                            <option value="Casado">Casado(a)</option>
-                            <option value="Divorciado">Divorciado(a)</option>
-                            <option value="Viuvo">Viúvo(a)</option> <!-- CORRIGIDO de "Viúvo" -->
-                            <option value="uniao-estavel">União Estável</option>
+                            <option value="Solteiro">Solteiro</option>
+                            <option value="Casado">Casado</option>
+                            <option value="Divorciado">Divorciado</option>
+                            <option value="Viúvo">Viúvo</option>
+                            <option value="União Estável">União Estável</option>
                             <option value="Nenhum">Nenhum</option>
                             <option value="Outros">Outros</option>
                         </select>
@@ -155,11 +150,14 @@
                     </div>
                     
                     <div class="custom-select-wrapper relative mb-4">
-                        <label for="tipo_terapias" class="sr-only">Tipo de Terapia</label>
+                        <label for="tipo_terapias" class="sr-only">Qual terapia desejada?</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="tipo_terapias" name="tipo_terapias" required>
                             <option value="" selected disabled>Tipo de Terapia</option>
-                            <option value="individual">Individual</option>
-                            <option value="grupo">Grupo</option>
+                            <option value="infantil">Infantil (até 14 anos)</option>
+                            <option value="adolescente">Adolescente (15 a 18 anos)</option>
+                            <option value="adulto">Adulto (18 até 60 anos)</option>
+                            <option value="idoso">Idoso (60+ anos)</option>
+                            <option value="grupo">Em grupo</option>
                             <option value="casal">Casal</option>
                             <option value="familia">Família</option>
                         </select>
@@ -240,12 +238,11 @@
                             <label for="estado_civil_responsavel" class="sr-only">Estado Civil do Responsável</label>
                             <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="estado_civil_responsavel" name="estado_civil_responsavel">
                                 <option value="" selected disabled>Estado Civil</option>
-                                <!-- CORREÇÃO: values simples e consistentes com a lista do inscrito -->
-                                <option value="Solteiro">Solteiro(a)</option>
-                                <option value="Casado">Casado(a)</option>
-                                <option value="Divorciado">Divorciado(a)</option>
-                                <option value="Viuvo">Viúvo(a)</option>
-                                <option value="uniao-estavel">União Estável</option>
+                                <option value="Solteiro">Solteiro</option>
+                                <option value="Casado">Casado</option>
+                                <option value="Divorciado">Divorciado</option>
+                                <option value="Viúvo">Viúvo</option>
+                                <option value="União Estável">União Estável</option>
                                 <option value="Nenhum">Nenhum</option>
                                 <option value="Outros">Outros</option>
                             </select>

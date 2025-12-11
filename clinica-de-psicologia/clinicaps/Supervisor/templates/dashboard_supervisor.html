@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-9">
+            <h2>Dashboard do Supervisor</h2>
+            <p class="lead">Bem-vindo, {{ user.nome_completo }}</p>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    Meus Estagiários
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Semestre</th>
+                                    <th>Nível</th>
+                                    <th>Pacientes Vinculados</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for estagiario in estagiarios %}
+                                <tr>
+                                    <td>{{ estagiario.nome_completo }}</td>
+                                    <td>{{ estagiario.semestre|default:"-" }}</td>
+                                    <td>{{ estagiario.get_nivel_estagio_display|default:"-" }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ estagiario.num_pacientes }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'supervisor:estagiario_detail' estagiario.pk %}" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum estagiário vinculado.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header bg-primary text-white">
+                    Meus Dados
+                </div>
+                <div class="card-body">
+                    <p><strong>Nome:</strong> {{ user.nome_completo }}</p>
+                    <p><strong>CRP:</strong> {{ user.crp|default:"Não informado" }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Telefone:</strong> {{ user.telefone }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

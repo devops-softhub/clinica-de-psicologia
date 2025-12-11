@@ -132,6 +132,9 @@ class Inscritocomunidade(models.Model):
     class Meta:
         managed = True
         db_table = 'inscritocomunidade'
+        indexes = [
+            models.Index(fields=['dthinscricao'], name='idx_dthinsc_comun'),
+        ]
 
 
 class Inscritoconvenio(models.Model):
@@ -161,6 +164,9 @@ class Inscritoconvenio(models.Model):
     class Meta:
         managed = True
         db_table = 'inscritoconvenio'
+        indexes = [
+            models.Index(fields=['dthinscricao'], name='idx_dthinsc_conv'),
+        ]
 
 
 class Medicamento(models.Model):

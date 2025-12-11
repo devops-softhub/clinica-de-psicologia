@@ -33,8 +33,8 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-sm font-medium text-gray-500">Total de Usuários</p>
-                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ usuarios.count|default:"--" }}</h3>
+                <p class="text-sm font-medium text-gray-500">Total de Usuários Ativos</p>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ usuarios_ativos.count|default:"--" }}</h3>
             </div>
             <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
                 <i class="bi bi-people text-xl"></i>
@@ -52,12 +52,12 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-sm font-medium text-gray-500">Usuários Ativos</p>
+                <p class="text-sm font-medium text-gray-500">Usuários Inativos</p>
                 <!-- Placeholder logic, ideally passed from view -->
-                <h3 class="text-3xl font-bold text-gray-800 mt-2">--</h3>
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ usuarios_inativos.count|default:"--" }}</h3>
             </div>
-            <div class="p-2 bg-green-50 rounded-lg text-green-600">
-                <i class="bi bi-check-circle text-xl"></i>
+            <div class="p-2 bg-red-50 rounded-lg text-red-600">
+                <i class="bi bi-person-x text-xl"></i>
             </div>
         </div>
         <div class="mt-4 flex items-center text-sm">
@@ -81,10 +81,10 @@
     </div>
 </div>
 
-<!-- Tabela de Usuários -->
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+<!-- Tabela de Usuários Ativos -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-        <h3 class="font-bold text-gray-800">Usuários do Sistema</h3>
+        <h3 class="font-bold text-gray-800">Usuários Ativos</h3>
         <div class="flex gap-2">
             <div class="relative">
                 <input type="text" placeholder="Buscar usuário..." class="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64">
@@ -108,7 +108,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-                {% for usuario in usuarios %}
+                {% for usuario in usuarios_ativos %}
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
@@ -169,8 +169,73 @@
     </div>
     
     <div class="p-4 border-t border-gray-100 flex justify-between items-center">
-        <p class="text-sm text-gray-500">Mostrando {{ usuarios|length }} usuários</p>
+        <p class="text-sm text-gray-500">Mostrando {{ usuarios_ativos|length }} usuários ativos</p>
         <!-- Pagination could go here if implemented in view -->
+    </div>
+</div>
+
+<!-- Tabela de Usuários Inativos -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+        <h3 class="font-bold text-gray-800">Usuários Inativos</h3>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider">
+                    <th class="px-6 py-4 font-semibold border-b border-gray-100">Usuário</th>
+                    <th class="px-6 py-4 font-semibold border-b border-gray-100">Cargo</th>
+                    <th class="px-6 py-4 font-semibold border-b border-gray-100">Status</th>
+                    <th class="px-6 py-4 font-semibold border-b border-gray-100">Data Desativação</th>
+                    <th class="px-6 py-4 font-semibold border-b border-gray-100 text-right">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for usuario in usuarios_inativos %}
+                <tr class="hover:bg-gray-50 transition-colors opacity-75">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-bold uppercase">
+                                {{ usuario.nome_completo|slice:":2" }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">{{ usuario.nome_completo }}</p>
+                                <p class="text-xs text-gray-500">{{ usuario.email }}</p>
+                                <p class="text-xs text-gray-400">{{ usuario.matricula }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                            {{ usuario.get_cargo_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="flex items-center gap-1.5 text-sm text-red-600 font-medium">
+                            <span class="h-2 w-2 rounded-full bg-red-500"></span>
+                            Inativo
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        {{ usuario.dth_delete|default:"-" }}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <!-- Ações para inativos (ex: reativar) podem ser adicionadas aqui -->
+                        <span class="text-gray-400 text-sm">Sem ações</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">Nenhum usuário inativo.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="p-4 border-t border-gray-100 flex justify-between items-center">
+        <p class="text-sm text-gray-500">Mostrando {{ usuarios_inativos|length }} usuários inativos</p>
     </div>
 </div>
 {% endblock %}

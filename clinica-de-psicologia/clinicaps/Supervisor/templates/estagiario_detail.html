@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Detalhes do Estagiário</h2>
+        <a href="{% url 'supervisor:dashboard' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Informações Pessoais
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome:</strong> {{ estagiario.nome_completo }}</p>
+                    <p><strong>RA/Matrícula:</strong> {{ estagiario.matricula }}</p>
+                    <p><strong>Email:</strong> {{ estagiario.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Semestre:</strong> {{ estagiario.semestre|default:"-" }}</p>
+                    <p><strong>Nível:</strong> {{ estagiario.get_nivel_estagio_display|default:"-" }}</p>
+                    <p><strong>Telefone:</strong> {{ estagiario.telefone }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Pacientes Vinculados</span>
+            <!-- Botão de vincular pode ser adicionado aqui futuramente -->
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Tipo</th>
+                            <th>Data Início</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prontuario in prontuarios %}
+                        <tr>
+                            <td>
+                                {% if prontuario.paciente_comunidade %}
+                                    {{ prontuario.paciente_comunidade.nomeinscrito }}
+                                {% elif prontuario.paciente_convenio %}
+                                    {{ prontuario.paciente_convenio.nomeinscrito }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if prontuario.paciente_comunidade %}
+                                    Comunidade
+                                {% else %}
+                                    Convênio
+                                {% endif %}
+                            </td>
+                            <td>{{ prontuario.dth_abertura|date:"d/m/Y" }}</td>
+                            <td>
+                                <!-- Link para dados_inscrito reutilizando a view do estagiário -->
+                                <a href="{% url 'estagiario:dados_inscrito' prontuario.pk %}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-file-text"></i> Prontuário
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum paciente vinculado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

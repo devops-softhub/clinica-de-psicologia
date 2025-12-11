@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_form.html' %}
 {% load static %}
 
 {% block title %}Ficha de Inscrição por Convênio{% endblock %}
@@ -214,11 +214,14 @@
                     </div>
                     
                     <div class="custom-select-wrapper relative mb-4">
-                        <label for="tipo_terapias" class="sr-only">Tipo de Terapia</label>
+                        <label for="tipo_terapias" class="sr-only">Qual terapia desejada?</label>
                         <select class="form-select block w-full bg-gray-100 border-none rounded-md py-3 px-4 text-sm text-gray-800 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-opacity-60 md:text-base appearance-none pr-12" id="tipo_terapias" name="tipo_terapias" required>
                             <option value="" selected disabled>Tipo de Terapia</option>
-                            <option value="individual">Individual</option>
-                            <option value="grupo">Grupo</option>
+                            <option value="infantil">Infantil (até 14 anos)</option>
+                            <option value="adolescente">Adolescente (15 a 18 anos)</option>
+                            <option value="adulto">Adulto (18 até 60 anos)</option>
+                            <option value="idoso">Idoso (60+ anos)</option>
+                            <option value="grupo">Em grupo</option>
                             <option value="casal">Casal</option>
                             <option value="familia">Família</option>
                         </select>

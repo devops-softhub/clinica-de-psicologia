@@ -80,56 +80,11 @@
                 </li>
                 
                 <!-- Menu Items Logic -->
-                {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                <li>
-                    <a href="#"
-                       class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="bi bi-journal-medical w-5 text-center"></i><span>Prontuários</span>
-                    </a>
-                </li>
-                {% endif %}
-
                 {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' %}
                 <li>
-                    <a href="#"
+                    <a href="{% url 'estagiario:consulta_inscritos' %}"
                        class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
                         <i class="bi bi-people w-5 text-center"></i><span>Seleção de Inscritos</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                <li>
-                    <a href="#"
-                       class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="bi bi-person-heart w-5 text-center"></i><span>Consultar Pacientes</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'SEC' %}
-                <li>
-                    <a href="#"
-                       class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="bi bi-calendar2-check w-5 text-center"></i><span>Consultas Agendadas</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                <li>
-                    <a href="#"
-                       class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="bi bi-file-earmark-text w-5 text-center"></i><span>Gerar Relatório</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'SEC' %}
-                <li>
-                    <a href="#"
-                       class="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="bi bi-display w-5 text-center"></i><span>Visualização de Salas</span>
                     </a>
                 </li>
                 {% endif %}
@@ -181,56 +136,11 @@
                     </li>
                     
                     <!-- Menu Items Logic (Desktop) -->
-                    {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                    <li>
-                        <a href="#"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-                            <i class="bi bi-journal-medical w-5 text-center"></i><span>Prontuários</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
                     {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' %}
                     <li>
-                        <a href="#"
+                        <a href="{% url 'estagiario:consulta_inscritos' %}"
                            class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
                             <i class="bi bi-people w-5 text-center"></i><span>Seleção de Inscritos</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                    <li>
-                        <a href="#"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-                            <i class="bi bi-person-heart w-5 text-center"></i><span>Consultar Pacientes</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'SEC' %}
-                    <li>
-                        <a href="#"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-                            <i class="bi bi-calendar2-check w-5 text-center"></i><span>Consultas Agendadas</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'RESP_TEC' %}
-                    <li>
-                        <a href="#"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-                            <i class="bi bi-file-earmark-text w-5 text-center"></i><span>Gerar Relatório</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% if user.cargo == 'COORD' or user.cargo == 'SUPER' or user.cargo == 'ESTAG' or user.cargo == 'SEC' %}
-                    <li>
-                        <a href="#"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
-                            <i class="bi bi-display w-5 text-center"></i><span>Visualização de Salas</span>
                         </a>
                     </li>
                     {% endif %}

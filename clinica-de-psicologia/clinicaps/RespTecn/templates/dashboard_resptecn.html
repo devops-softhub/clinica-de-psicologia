@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Dashboard Responsável Técnica</h2>
+        <a href="{% url 'resptecn:lista_supervisores' %}" class="btn btn-outline-primary">
+            <i class="bi bi-people"></i> Ver Supervisores
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <form method="get" class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="search" class="col-form-label">Buscar:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Paciente ou Estagiário" value="{{ request.GET.search }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Estagiário</th>
+                            <th>Supervisor</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prontuario in prontuarios %}
+                        <tr>
+                            <td>
+                                {% if prontuario.paciente_comunidade %}
+                                    {{ prontuario.paciente_comunidade.nomeinscrito }}
+                                {% elif prontuario.paciente_convenio %}
+                                    {{ prontuario.paciente_convenio.nomeinscrito }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ prontuario.estagiario.nome_completo }}</td>
+                            <td>{{ prontuario.estagiario.supervisor_vinculado.nome_completo|default:"-" }}</td>
+                            <td>
+                                {% if prontuario.paciente_comunidade %}
+                                    Comunidade
+                                {% else %}
+                                    Convênio
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'estagiario:dados_inscrito' prontuario.pk %}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye"></i> Detalhes
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhum atendimento ativo encontrado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginação -->
+            {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}">Anterior</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}">Próximo</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

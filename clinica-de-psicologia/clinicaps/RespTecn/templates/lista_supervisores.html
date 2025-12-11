@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Lista de Supervisores</h2>
+        <a href="{% url 'resptecn:dashboard' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+
+    <div class="row">
+        {% for supervisor in supervisores %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ supervisor.nome_completo }}</h5>
+                    <p class="card-text">
+                        <strong>CRP:</strong> {{ supervisor.crp|default:"Não informado" }}<br>
+                        <strong>Estagiários:</strong> {{ supervisor.num_estagiarios }}
+                    </p>
+                    <a href="{% url 'resptecn:supervisor_detail' supervisor.pk %}" class="btn btn-primary">Visualizar</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Nenhum supervisor cadastrado.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
